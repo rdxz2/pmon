@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SvsApiPmon from '../services/SvsApiPmon';
-import { SERVER_ADDRESSES } from '../utils/UtlServerAddresses';
+import { SERVER_ADDRESSES } from '../utilities/UtlServerAddresses';
 
 export const CtxApi = React.createContext({
   svsApiPmonIdentity: {
@@ -20,7 +20,8 @@ export const CtxApi = React.createContext({
 });
 
 const CtxPvdApi = ({ children }) => {
-  // state
+  // START ~~> state
+
   // pmonidentity
   const [svsApiPmonIdentity] = React.useState(
     new SvsApiPmon({
@@ -28,6 +29,7 @@ const CtxPvdApi = ({ children }) => {
       name: 'pmonidentity'
     })
   );
+
   // pmonapi
   const [svsApiPmon] = React.useState(
     new SvsApiPmon({
@@ -35,6 +37,8 @@ const CtxPvdApi = ({ children }) => {
       name: 'pmonapi'
     })
   );
+
+  // END <~~ state
 
   return <CtxApi.Provider value={{ svsApiPmonIdentity, svsApiPmon }}>{children}</CtxApi.Provider>;
 };

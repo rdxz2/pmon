@@ -5,10 +5,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import CtxPvdApi from './contexts/CtxApi';
 import CtxPvdLayouting from './contexts/CtxLayouting';
-import LayMain from './layouts/LayMain';
-import PgLogin from './pages/PgLogin';
-import PgNotFound from './pages/PgNotFound';
-import PgRegister from './pages/PgRegister';
+import Lay from './layouts/Lay';
+import PgLogin from './pages/PgLogin/PgLogin';
+import PgNotFound from './pages/PgNotFound/PgNotFound';
+import PgRegister from './pages/PgRegister/PgRegister';
+import CmpPrivateRoute from './components/CmpPrivateRoute';
 
 const App = () => {
   return (
@@ -20,12 +21,12 @@ const App = () => {
         <Router>
           <Switch>
             {/* public route */}
-            <Route exact path='/login' component={PgLogin}></Route>
-            <Route exact path='/register' component={PgRegister}></Route>
+            <Route path="/login" component={PgLogin}></Route>
+            <Route path="/register" component={PgRegister}></Route>
             {/* private (protected) route */}
-            <Route path='/' component={LayMain}></Route>
-            {/* not found */}
-            <Route component={PgNotFound}></Route>
+            <Route path="/" component={Lay}></Route>
+            {/* not found route */}
+            {/* <Route component={PgNotFound}></Route> */}
           </Switch>
         </Router>
       </CtxPvdLayouting>

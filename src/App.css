@@ -1,2 +1,9 @@
-body {
+/* number input */
+.ant-input-number {
+  width: 100%;
+}
+
+/* input field prefix icon */
+.ant-input-prefix > .anticon {
+  color: rgba(0, 0, 0, 0.25);
 }

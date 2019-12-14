@@ -1,0 +1,30 @@
+/* account page */
+.page-account {
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* user information's card */
+.page-account .card-user-information {
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* user information's action buttons (edit & log out) */
+.page-account .action-buttons {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.page-account .action-buttons button {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+/* mobile view */
+@media (max-width: 767px) {
+  .page-account {
+    width: 100%;
+  }
+}
