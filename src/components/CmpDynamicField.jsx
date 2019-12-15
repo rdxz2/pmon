@@ -4,7 +4,7 @@ import './CmpDynamicField.css';
 import { isEmptyArray } from '../utilities/UtlDataManipulator';
 let id = 1;
 
-const CmpDynamicField = ({ initialValue, name, fields, form }) => {
+const CmpDynamicField = ({ initialValues, name, fields, form }) => {
   // START ~~> state
 
   // END <~~ state
@@ -18,8 +18,6 @@ const CmpDynamicField = ({ initialValue, name, fields, form }) => {
   // form field validation
   const { getFieldDecorator, getFieldValue, setFieldsValue, setFieldsInitialValue } = form;
 
-  console.log(setFieldsInitialValue);
-
   // END <~~ other
 
   // START ~~> handler
@@ -28,8 +26,6 @@ const CmpDynamicField = ({ initialValue, name, fields, form }) => {
   const handleAddField = () => {
     // get list of field's key
     const keys = getFieldValue(`${name}List`);
-
-    console.log('ekys', keys);
 
     // append one key
     const nextKeys = keys.concat(id++);
@@ -55,56 +51,68 @@ const CmpDynamicField = ({ initialValue, name, fields, form }) => {
   };
 
   // set default validation
-  // const handleSetDefaultValidation = _name => ({
-  //   validateTrigger: ['onBlur'],
-  //   rules: [
-  //     {
-  //       required: true,
-  //       whitespace: true,
-  //       message: `${_name} is required`
-  //     }
-  //   ]
-  // });
+  const handleSetDefaultValidation = _name => ({
+    validateTrigger: ['onBlur'],
+    rules: [
+      {
+        required: true,
+        whitespace: true,
+        message: `${_name} is required`
+      }
+    ]
+  });
 
   // render multiple fields
   const handleRenderMultipleFields = () => {
-    console.log('is not empty array', !isEmptyArray(initialValue));
+    // getFieldDecorator(`${name}List`, {
+    //   initialValue: !isEmptyArray(initialValues) ? initialValues.map((v, k) => k) : [0]
+    // });
+    // getFieldDecorator(name, { initialValue: !isEmptyArray(initialValues) ? [...initialValues] : [{}] });
 
-    getFieldDecorator(`${name}List`, {
-      initialValue: !isEmptyArray(initialValue) ? initialValue.map((v, k) => k) : [0]
-    });
-    // getFieldDecorator(name, { initialValue: !isEmptyArray(initialValue) ? [...initialValue] : [] });
+    getFieldDecorator(`${name}List`);
+    getFieldDecorator(name);
 
-    const fieldsCounter = getFieldValue(`${name}List`);
+    const fieldCounter = getFieldValue(`${name}List`);
 
-    console.log('xxx', getFieldValue(`${name}List`));
-    console.log('xxx', getFieldValue(name));
+    console.log('getFieldValue1', getFieldValue(`${name}List`));
+    console.log('getFieldValue2', getFieldValue(name));
 
-    return fieldsCounter.map((v, k) => {
+    return fieldCounter.map((v, k) => (
       // render rows
-      return (
-        <Row key={k} gutter={8}>
-          {/* render columns */}
-          {fields.map((_v, _k) => {
-            console.log('mapping', name, k, _v.name);
-            return (
-              <Col span={_v.colSpan} key={`${_k}${_v.name}`}>
-                <Form.Item hasFeedback>
-                  {getFieldDecorator(`${name}[${k}][${_v.name}]`, {
-                    validateTrigger: ['onBlur'],
-                    rule: []
-                  })(_v.field())}
-                </Form.Item>
-              </Col>
-            );
-          })}
-          {/* remove button */}
-          <Col className="dynamic-field-button-remove" span={3}>
-            <Button type="danger" icon="minus-circle-o" onClick={() => handleRemoveField(k)} />
+      <Row key={k} gutter={8}>
+        {/* render columns */}
+        {fields.map((_v, _k) => (
+          <Col span={_v.colSpan} key={`${k}${_v.name}`}>
+            <Form.Item hasFeedback>
+              {getFieldDecorator(`${name}[${k}][${_v.name}]`, {
+                validateTrigger: ['onBlur'],
+                rule: []
+              })(_v.field())}
+            </Form.Item>
           </Col>
-        </Row>
-      );
-    });
+        ))}
+        {/* remove button */}
+        <Col className="dynamic-field-button-remove" span={3}>
+          <Button type="danger" icon="minus-circle-o" onClick={() => handleRemoveField(k)} />
+        </Col>
+      </Row>
+    ));
+
+    return fieldCounter.reduce((v, k) => {
+      const row = fields.map((_v, _k) => (
+        <Form.Item key={`${k}${_v.name}`}>
+          {getFieldDecorator(
+            `${name}[${k}][${_v.name}]`,
+            _v.validation || handleSetDefaultValidation(name)
+          )(_v.field())}
+          {fieldCounter.length > 1 && fields.length - 1 === _k ? (
+            <Icon className="dynamic-delete-button" type="minus-circle-o" onClick={() => handleRemoveField(k)} />
+          ) : null}
+        </Form.Item>
+      ));
+
+      return [...v, ...row];
+    }, []);
   };
 
   // render single fields
@@ -137,23 +145,16 @@ const CmpDynamicField = ({ initialValue, name, fields, form }) => {
   // START ~~> effect
 
   // load initial data
-  // React.useState(() => {
-  //   if (!isEmptyArray(initialValue)) {
-  //     const keys = [];
+  React.useState(() => {
+    if (!isEmptyArray(initialValues)) {
+      const keys = [];
 
-  //     initialValue.forEach((v, k) => keys.push(k));
+      initialValues.forEach((v, k) => keys.push(k));
 
-  //     getFieldDecorator(`${name}List`, { initialValue: [0] });
-  //     getFieldDecorator(name, { initialValue: [{}] });
-
-  //     setFieldsValue({
-  //       // set data count
-  //       [`${name}List`]: keys,
-  //       // set initial data
-  //       [name]: initialValue
-  //     });
-  //   }
-  // }, [initialValue]);
+      getFieldDecorator(`${name}List`, { initialValue: [...keys] });
+      getFieldDecorator(name, { initialValue: [...initialValues] });
+    }
+  }, [initialValues]);
 
   // END <~~ effect
 

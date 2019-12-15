@@ -74,7 +74,50 @@ const ProjectCrWrapped = ({ form }) => {
         )}
       </Form.Item>
       {/* Collaborators */}
-      <Form.Item label="Collaborators">
+      <Form.List name="collaborators">
+        {(fields, { add, remove }) => {
+          return (
+            <div>
+              {fields.map((field, index) => (
+                <Form.Item
+                  // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                  label={index === 0 ? 'Passengers' : ''}
+                  required={false}
+                  key={field.key}
+                >
+                  <Form.Item
+                    {...field}
+                    validateTrigger={['onChange', 'onBlur']}
+                    rules={[
+                      {
+                        required: true,
+                        whitespace: true,
+                        message: "Please input passenger's name or delete this field."
+                      }
+                    ]}
+                    noStyle
+                  >
+                    <Input placeholder="passenger name" style={{ width: '60%', marginRight: 8 }} />
+                  </Form.Item>
+                  {fields.length > 1 ? <Icon name="minus-circle-o"></Icon> : null}
+                </Form.Item>
+              ))}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => {
+                    add();
+                  }}
+                  style={{ width: '60%' }}
+                >
+                  <Icon name="plus-circle-o"></Icon>
+                </Button>
+              </Form.Item>
+            </div>
+          );
+        }}
+      </Form.List>
+      {/* <Form.Item label="Collaborators">
         <CmpDynamicField
           name="collaborators"
           fields={{
@@ -84,14 +127,14 @@ const ProjectCrWrapped = ({ form }) => {
           }}
           form={form}
         ></CmpDynamicField>
-      </Form.Item>
+      </Form.Item> */}
       {/* Image */}
       {/* Template */}
       {/* Tes */}
       <Form.Item label="tes">
-        <CmpDynamicField
+        {/* <CmpDynamicField
           name="tes"
-          initialValue={[
+          initialValues={[
             { tes1: 'a', tes2: 'b', tes3: 'c' },
             { tes1: 'd', tes2: 'e', tes3: 'f' },
             { tes1: 'adsv', tes2: 'dwd', tes3: 'asd' },
@@ -103,7 +146,7 @@ const ProjectCrWrapped = ({ form }) => {
             { name: 'tes3', colSpan: 10, field: () => <Input placeholder="placeholder tes3"></Input> }
           ]}
           form={form}
-        ></CmpDynamicField>
+        ></CmpDynamicField> */}
       </Form.Item>
       {/* submit button */}
       <Form.Item>
