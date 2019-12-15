@@ -1,8 +1,8 @@
-import Axios from "axios";
-import decode from "jwt-decode";
-import { stringify } from "querystring";
+import Axios from 'axios';
+import decode from 'jwt-decode';
+import { stringify } from 'querystring';
 
-import { IDENTITY_CONFIGURATION } from "../utilities/UtlIdentityConfigurations";
+import { IDENTITY_CONFIGURATION } from '../utilities/UtlIdentityConfigurations';
 
 export default class SvsApiPmon {
   constructor(apiInformation) {
@@ -21,7 +21,7 @@ export default class SvsApiPmon {
         headers: { Authorization: authorization }
       });
     } catch (err) {
-      let message = "";
+      let message = '';
 
       // if response is received from api
       if (err.response) {
@@ -32,20 +32,20 @@ export default class SvsApiPmon {
             break;
           // unauthorized
           case 401:
-            message = "your are currently not authorized, please log in again";
+            message = 'your are currently not authorized, please log in again';
             this.logout();
-            window.location = "/login";
+            window.location = '/login';
             break;
           // not found
           case 404:
-            message = "server not found";
+            message = 'server not found';
             break;
           // internal server error
           case 500:
-            message = "there are errors in server";
+            message = 'there are errors in server';
             break;
           default:
-            message = "failed to get response from server";
+            message = 'failed to get response from server';
             break;
         }
       }
@@ -57,13 +57,13 @@ export default class SvsApiPmon {
   }
 
   // send request (table)
-  async getTable(endPointName = "", show = 0, page = 0, search = {}, sort = {}) {
+  async getTable(endPointName = '', show = 0, page = 0, search = {}, sort = {}) {
     try {
       const res = await this.send(
         `${endPointName}/table`,
-        "post",
+        'post',
         { show, page, search, sort },
-        "failed getting table data"
+        'failed getting table data'
       );
       const tableData = {
         // kasih key untuk setiap row
@@ -78,13 +78,13 @@ export default class SvsApiPmon {
   }
 
   // send request (dropdown)
-  async getDropdown(endPointName = "", search = "", requiredIds = {}, alreadyIds = [], show = 100) {
+  async getDropdown(endPointName = '', search = '', requiredIds = {}, alreadyIds = [], show = 100) {
     try {
       const res = await this.send(
         `${endPointName}/dropdown`,
-        "post",
+        'post',
         { search, requiredIds, alreadyIds, show },
-        "failed getting dropdown data"
+        'failed getting dropdown data'
       );
       return res.data;
     } catch (err) {
@@ -93,9 +93,14 @@ export default class SvsApiPmon {
   }
 
   // send request (anything)
-  async sendRequest(endPointName = "", method = "", data = {}) {
+  async sendRequest(endPointName = '', method = '', data = {}) {
     try {
-      const res = await this.send(endPointName, method, data, "failed sending request to server");
+      // cleanse empty array element
+      let key;
+      for (key in data)
+        if (data.hasOwnProperty(key)) if (Array.isArray(data[key])) data[key] = data[key].filter(v => v !== null);
+
+      const res = await this.send(endPointName, method, data, 'failed sending request to server');
       return res.data;
     } catch (err) {
       throw err.message;
@@ -107,20 +112,20 @@ export default class SvsApiPmon {
     try {
       const res = await Axios.post(
         // server's token endpoint
-        this.baseUrl + "/connect/token",
+        this.baseUrl + '/connect/token',
         // oidc data + user login
         stringify({ ...IDENTITY_CONFIGURATION, ...dataLogin }),
         // x-www-form-urlencoded request format
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            'Content-Type': 'application/x-www-form-urlencoded'
           }
         }
       );
 
       this.setToken(res.data.access_token);
     } catch (err) {
-      throw new Error("wrong username/password").message;
+      throw new Error('wrong username/password').message;
     }
   };
 
@@ -136,11 +141,11 @@ export default class SvsApiPmon {
 
   // utils
   // token setter
-  setToken = token => localStorage.setItem("pmon_access_token", token);
+  setToken = token => localStorage.setItem('pmon_access_token', token);
   // token getter
-  getToken = () => localStorage.getItem("pmon_access_token");
+  getToken = () => localStorage.getItem('pmon_access_token');
   // token remover
-  removeToken = () => localStorage.removeItem("pmon_access_token");
+  removeToken = () => localStorage.removeItem('pmon_access_token');
   // check if token is expired
   isExpired = token => {
     try {

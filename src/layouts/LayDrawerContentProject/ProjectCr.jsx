@@ -34,21 +34,24 @@ const ProjectCrWrapped = ({ form }) => {
     event.preventDefault();
 
     form.validateFields(async (error, values) => {
-      console.log('values', values);
-      // if (!error) {
-      //   try {
-      //     isSubmittingSet(true);
+      if (!error) {
+        try {
+          isSubmittingSet(true);
 
-      //     // log in to identity server -> set jwt to local storage
-      //     await svsApiPmon.sendRequest('project/create', 'post', { ...values });
+          // cleanse empty array elements
+          // values.collaborators = values.collaborators.filter(v => v !== null);
+          // values.tes = values.tes.filter(v => v !== null);
 
-      //     message.success(`project '${values.name}' created successfully`);
-      //   } catch (err) {
-      //     isSubmittingSet(false);
+          // log in to identity server -> set jwt to local storage
+          await svsApiPmon.sendRequest('mproject/create', 'post', { ...values });
 
-      //     message.error(err);
-      //   }
-      // }
+          message.success(`project '${values.name}' created successfully`);
+        } catch (err) {
+          message.error(err);
+        } finally {
+          isSubmittingSet(false);
+        }
+      }
     });
   };
 
@@ -74,52 +77,10 @@ const ProjectCrWrapped = ({ form }) => {
         )}
       </Form.Item>
       {/* Collaborators */}
-      <Form.List name="collaborators">
-        {(fields, { add, remove }) => {
-          return (
-            <div>
-              {fields.map((field, index) => (
-                <Form.Item
-                  // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                  label={index === 0 ? 'Passengers' : ''}
-                  required={false}
-                  key={field.key}
-                >
-                  <Form.Item
-                    {...field}
-                    validateTrigger={['onChange', 'onBlur']}
-                    rules={[
-                      {
-                        required: true,
-                        whitespace: true,
-                        message: "Please input passenger's name or delete this field."
-                      }
-                    ]}
-                    noStyle
-                  >
-                    <Input placeholder="passenger name" style={{ width: '60%', marginRight: 8 }} />
-                  </Form.Item>
-                  {fields.length > 1 ? <Icon name="minus-circle-o"></Icon> : null}
-                </Form.Item>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => {
-                    add();
-                  }}
-                  style={{ width: '60%' }}
-                >
-                  <Icon name="plus-circle-o"></Icon>
-                </Button>
-              </Form.Item>
-            </div>
-          );
-        }}
-      </Form.List>
-      {/* <Form.Item label="Collaborators">
+      <Form.Item label="Collaborators">
         <CmpDynamicField
           name="collaborators"
+          initialValues={['1xx', '2xx', '3xx']}
           fields={{
             name: 'collaborator',
             validation: {},
@@ -127,26 +88,26 @@ const ProjectCrWrapped = ({ form }) => {
           }}
           form={form}
         ></CmpDynamicField>
-      </Form.Item> */}
+      </Form.Item>
       {/* Image */}
       {/* Template */}
       {/* Tes */}
       <Form.Item label="tes">
-        {/* <CmpDynamicField
+        <CmpDynamicField
           name="tes"
-          initialValues={[
-            { tes1: 'a', tes2: 'b', tes3: 'c' },
-            { tes1: 'd', tes2: 'e', tes3: 'f' },
-            { tes1: 'adsv', tes2: 'dwd', tes3: 'asd' },
-            { tes1: 'asdv', tes2: 'bsds', tes3: 'csadsd' }
-          ]}
+          // initialValues={[
+          //   { tes1: 'a', tes2: 'b', tes3: 'c' },
+          //   { tes1: 'd', tes2: 'e', tes3: 'f' },
+          //   { tes1: 'adsv', tes2: 'dwd', tes3: 'asd' },
+          //   { tes1: 'asdv', tes2: 'bsds', tes3: 'csadsd' }
+          // ]}
           fields={[
             { name: 'tes1', colSpan: 5, field: () => <Input placeholder="placeholder tes1"></Input> },
             { name: 'tes2', colSpan: 6, field: () => <Input placeholder="placeholder tes2"></Input> },
             { name: 'tes3', colSpan: 10, field: () => <Input placeholder="placeholder tes3"></Input> }
           ]}
           form={form}
-        ></CmpDynamicField> */}
+        ></CmpDynamicField>
       </Form.Item>
       {/* submit button */}
       <Form.Item>
