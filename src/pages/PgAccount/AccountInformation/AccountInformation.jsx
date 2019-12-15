@@ -7,7 +7,7 @@ import { isEmptyObject } from '../../../utilities/UtlDataManipulator';
 import AccountInformationDt from './AccountInformationDt';
 import AccountInformationEd from './AccountInformationEd';
 
-const AccountInformation = () => {
+const AccountInformation = ({ handleChangeActiveMenu }) => {
   // START ~~> context
 
   // api
@@ -65,10 +65,10 @@ const AccountInformation = () => {
 
   // START ~~> effect
 
-  // history
-  // React.useEffect(() => {
-  //   history.replace('account/information');
-  // }, [history]);
+  // change active menu
+  React.useEffect(() => {
+    handleChangeActiveMenu('information');
+  }, [handleChangeActiveMenu]);
 
   // load user detail
   React.useEffect(() => {
@@ -78,12 +78,12 @@ const AccountInformation = () => {
   // END <~~ effect
 
   return (
-    <React.Fragment>
+    <>
       {/* title */}
       <Typography.Title level={3}>Your account's information</Typography.Title>
       {/* content */}
       {!isEmptyObject(dataAccountInformation) ? (
-        <React.Fragment>
+        <>
           {/* action buttons */}
           <div className="action-buttons">
             {/* user's avatar */}
@@ -109,12 +109,12 @@ const AccountInformation = () => {
               dataAccountInformationLoading={dataAccountInformationLoading}
             ></AccountInformationEd>
           )}
-        </React.Fragment>
+        </>
       ) : (
         // render skeleton if user data is empty
         <Skeleton avatar paragraph={{ rows: 10 }}></Skeleton>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

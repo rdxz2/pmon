@@ -1,4 +1,8 @@
 
+// START ~~> state
+
+// END <~~ state
+
 // START ~~> context
 
 // END <~~ context
@@ -10,10 +14,6 @@
 // START ~~> handler
 
 // END <~~ handler
-
-// START ~~> state
-
-// END <~~ state
 
 // START ~~> effect
 

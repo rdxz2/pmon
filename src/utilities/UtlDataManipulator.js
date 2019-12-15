@@ -11,5 +11,5 @@ export const isEmptyObject = input => {
 
 // check if array is empty
 export const isEmptyArray = input => {
-  return Array.isArray(input) && input.length <= 0;
+  return !Array.isArray(input) || !input.length;
 };

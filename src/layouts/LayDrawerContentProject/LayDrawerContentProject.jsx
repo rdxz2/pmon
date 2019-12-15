@@ -1,12 +1,11 @@
 import { Button, Drawer, Empty, List, message } from 'antd';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { CtxApi } from '../../contexts/CtxApi';
 import { isEmptyArray } from '../../utilities/UtlDataManipulator';
 import ProjectCr from './ProjectCr';
 
-const LayDrawerContentProject = () => {
+const LayDrawerContentProject = ({ dataUserProject }) => {
   // START ~~> context
 
   // api
@@ -20,20 +19,6 @@ const LayDrawerContentProject = () => {
 
   // START ~~> handler
 
-  // load user's project
-  const handleLoadUserProjects = React.useCallback(async () => {
-    try {
-      // get user's projects from api
-      const res = await svsApiPmon.sendRequest('project', 'get');
-
-      // set state
-      dataUserProjectsSet([...res]);
-      dataUserProjectsLoadingSet(false);
-    } catch (err) {
-      message.error(err);
-    }
-  }, [svsApiPmon]);
-
   // create project drawer open/close handler
   const handleDrawerCreateProjectOpen = () => isDrawerCreactProjectOpenSet(true);
   const handleDrawerCreateProjectClose = () => isDrawerCreactProjectOpenSet(false);
@@ -42,10 +27,6 @@ const LayDrawerContentProject = () => {
 
   // START ~~> state
 
-  // user's projects
-  const [dataUserProjects, dataUserProjectsSet] = React.useState([]);
-  const [dataUserProjectsLoading, dataUserProjectsLoadingSet] = React.useState(true);
-
   // create project drawer
   const [isDrawerCreactProjectOpen, isDrawerCreactProjectOpenSet] = React.useState(false);
 
@@ -53,15 +34,10 @@ const LayDrawerContentProject = () => {
 
   // START ~~> effect
 
-  // load user's projects
-  React.useEffect(() => {
-    handleLoadUserProjects();
-  }, [handleLoadUserProjects]);
-
   // END <~~ effect
 
   return (
-    <React.Fragment>
+    <>
       {/* create project button */}
       <Button block type="primary" icon="plus" onClick={handleDrawerCreateProjectOpen}>
         Create new project
@@ -78,10 +54,11 @@ const LayDrawerContentProject = () => {
         <ProjectCr></ProjectCr>
       </Drawer>
       {/* project list */}
-      {!isEmptyArray(dataUserProjects) ? (
+      {!isEmptyArray(dataUserProject) ? (
+        // render user's project
         <List
           itemLayout="horizontal"
-          dataSource={dataUserProjects}
+          dataSource={dataUserProject}
           renderItem={item => (
             <List.Item>
               <List.Item.Meta avatar={item.avatar} title={item.title} description={item.description}></List.Item.Meta>
@@ -89,6 +66,7 @@ const LayDrawerContentProject = () => {
           )}
         ></List>
       ) : (
+        // render empty picture
         <Empty className="drawer-content-empty" description="You have no projects.. Create one!!"></Empty>
       )}
       {/* footer */}
@@ -101,7 +79,7 @@ const LayDrawerContentProject = () => {
           alt="logoIndomaret"
         ></img>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

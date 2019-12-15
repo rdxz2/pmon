@@ -1,0 +1,9 @@
+/* add button */
+.dynamic-field-button-add {
+  margin-bottom: 0;
+}
+
+/* remove button */
+.dynamic-field-button-remove {
+  text-align: right;
+}

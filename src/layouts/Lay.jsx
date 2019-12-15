@@ -1,6 +1,6 @@
 import './Lay.css';
 
-import { Menu, Button, Drawer, Layout, PageHeader, Descriptions, Icon, Badge, Avatar, Input } from 'antd';
+import { Menu, Button, Drawer, Layout, PageHeader, Descriptions, Icon, Badge, Avatar, Input, message } from 'antd';
 import React from 'react';
 
 import CmpPrivateRoute from '../components/CmpPrivateRoute';
@@ -15,9 +15,13 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { useHistory } from 'react-router-dom';
 import PgNotFound from '../pages/PgNotFound/PgNotFound';
+import { CtxApi } from '../contexts/CtxApi';
 
 const Lay = () => {
   // START ~~> context
+
+  // api
+  const { svsApiPmon } = React.useContext(CtxApi);
 
   // END <~~ context
 
@@ -29,6 +33,16 @@ const Lay = () => {
   // END <~~ other
 
   // START ~~> handler
+
+  // load user's project from server
+  const handleLoadUserProject = async () => {
+    try {
+      const res = await svsApiPmon.sendRequest('project', 'get');
+      dataUserProjectSet([...res]);
+    } catch (err) {
+      message.error(err);
+    }
+  };
 
   // pagename handler
   const handleChangeCurrentPage = _currentPage => currentPageSet(_currentPage);
@@ -54,6 +68,9 @@ const Lay = () => {
 
   // START ~~> state
 
+  // user's project
+  const [dataUserProject, dataUserProjectSet] = React.useState([]);
+
   // current active page
   const [currentPage, currentPageSet] = React.useState('');
 
@@ -64,6 +81,9 @@ const Lay = () => {
   // END <~~ state
 
   // START ~~> effect
+
+  // load user's project
+  React.useEffect(() => {}, []);
 
   // END <~~ effect
 
@@ -88,7 +108,7 @@ const Lay = () => {
         onClose={handleDrawerMenuClose}
         afterVisibleChange={handleDrawerMenuVisibleChange}
       >
-        <LayDrawerContentProject></LayDrawerContentProject>
+        <LayDrawerContentProject dataUserProject={dataUserProject}></LayDrawerContentProject>
       </Drawer>
       {/* notification drawer */}
       <Drawer

@@ -1,16 +1,14 @@
 import './PgAccount.css';
 
-import { Icon, Tabs, Menu, Row, Col } from 'antd';
+import { Icon, Menu } from 'antd';
 import React from 'react';
+import { Link, Route, useHistory } from 'react-router-dom';
 
 import AccountInformation from './AccountInformation/AccountInformation';
 import AccountPassword from './AccountPassword/AccountPassword';
-import { Link, Route, useHistory } from 'react-router-dom';
 import AccountSettings from './AccountSettings/AccountSettings';
-import Grid from 'antd/lib/card/Grid';
 
 const PgAccount = ({ match }) => {
-  console.log(match);
   // START ~~> context
 
   // END <~~ context
@@ -24,25 +22,26 @@ const PgAccount = ({ match }) => {
 
   // START ~~> state
 
+  // currently active menu
+  const [activeMenu, activeMenuSet] = React.useState('');
+
   // END <~~ state
 
   // START ~~> effect
 
-  // routing
-  // React.useEffect(() => {
-  //   history.replace('account');
-  // }, [history]);
-
   // END <~~ effect
 
   // START ~~> handler
+
+  // change currently active menu
+  const handleChangeActiveMenu = _activeMenu => activeMenuSet(_activeMenu);
 
   // END <~~ handler
 
   return (
     <div className="page-account">
       {/* menu list */}
-      <Menu mode="horizontal" defaultSelectedKeys="information">
+      <Menu mode="horizontal" selectedKeys={activeMenu}>
         {/* user's detailed information */}
         <Menu.Item key="information">
           <Link to={`${match.path}/information`}>
@@ -67,9 +66,18 @@ const PgAccount = ({ match }) => {
       </Menu>
       {/* contents */}
       <div>
-        <Route path={`${match.path}/information`} component={AccountInformation}></Route>
-        <Route path={`${match.path}/changepassword`} component={AccountPassword}></Route>
-        <Route path={`${match.path}/settings`} component={AccountSettings}></Route>
+        <Route
+          path={`${match.path}/information`}
+          render={() => <AccountInformation handleChangeActiveMenu={handleChangeActiveMenu}></AccountInformation>}
+        ></Route>
+        <Route
+          path={`${match.path}/changepassword`}
+          render={() => <AccountPassword handleChangeActiveMenu={handleChangeActiveMenu}></AccountPassword>}
+        ></Route>
+        <Route
+          path={`${match.path}/settings`}
+          render={() => <AccountSettings handleChangeActiveMenu={handleChangeActiveMenu}></AccountSettings>}
+        ></Route>
       </div>
     </div>
   );

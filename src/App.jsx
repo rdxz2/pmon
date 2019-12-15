@@ -24,7 +24,7 @@ const App = () => {
             <Route path="/login" component={PgLogin}></Route>
             <Route path="/register" component={PgRegister}></Route>
             {/* private (protected) route */}
-            <Route path="/" component={Lay}></Route>
+            <CmpPrivateRoute path="/" component={Lay}></CmpPrivateRoute>
             {/* not found route */}
             {/* <Route component={PgNotFound}></Route> */}
           </Switch>

@@ -31,7 +31,7 @@ const AccountInformationEdWrapped = ({ dataAccountInformation, dataAccountInform
           isSubmittingSet(true);
 
           // log in to identity server -> set jwt to local storage
-          await svsApiPmon.sendRequest('muser/edit', 'post', values);
+          await svsApiPmon.sendRequest('muser/edit', 'post', {...values});
 
           // get logged user data
           const res = await svsApiPmon.sendRequest('muser', 'get');

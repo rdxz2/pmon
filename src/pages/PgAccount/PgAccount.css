@@ -22,9 +22,18 @@
   margin-right: 4px;
 }
 
+/* change password form */
+.account-password {
+  padding-right: 10vw;
+}
+
 /* mobile view */
 @media (max-width: 767px) {
   .page-account {
     width: 100%;
+  }
+
+  .account-password {
+    padding-right: 0;
   }
 }

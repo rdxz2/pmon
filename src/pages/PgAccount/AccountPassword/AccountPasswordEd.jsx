@@ -86,7 +86,7 @@ const AccountPasswordEdWrapped = ({ form }) => {
   // END <~~ handler
 
   return (
-    <Form {...formItemLayout.body} onSubmit={handleSubmit}>
+    <Form {...formItemLayout.body} onSubmit={handleSubmit} className="account-password">
       {/* Old password */}
       <Form.Item hasFeedback label="Old password">
         {getFieldDecorator('passwordOld', {
