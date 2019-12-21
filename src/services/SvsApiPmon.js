@@ -1,8 +1,9 @@
 import Axios from 'axios';
 import decode from 'jwt-decode';
 import { stringify } from 'querystring';
+import PropTypes from 'prop-types';
 
-import { IDENTITY_CONFIGURATION } from '../utilities/UtlIdentityConfigurations';
+import { IDENTITY_CONFIGURATION } from '../constants/ConstIdentityConfigurations';
 
 export default class SvsApiPmon {
   constructor(apiInformation) {
@@ -81,7 +82,7 @@ export default class SvsApiPmon {
   async getDropdown(endPointName = '', search = '', requiredIds = {}, alreadyIds = [], show = 100) {
     try {
       const res = await this.send(
-        `${endPointName}/dropdown`,
+        `${endPointName}/dd`,
         'post',
         { search, requiredIds, alreadyIds, show },
         'failed getting dropdown data'

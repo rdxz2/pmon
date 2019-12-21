@@ -54,7 +54,7 @@ const AccountPasswordEdWrapped = ({ form }) => {
           isSubmittingSet(true);
 
           // change user password from identity server
-          await svsApiPmonIdentity.sendRequest('muser/changepassword', 'post', { ...values });
+          await svsApiPmonIdentity.sendRequest('user/changepassword', 'post', { ...values });
 
           message.success('password changed successfully');
 

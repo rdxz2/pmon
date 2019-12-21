@@ -16,6 +16,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import PgNotFound from '../pages/PgNotFound/PgNotFound';
 import { CtxApi } from '../contexts/CtxApi';
+import PgProject from '../pages/PgProject/PgProject';
 
 const Lay = () => {
   // START ~~> context
@@ -35,14 +36,14 @@ const Lay = () => {
   // START ~~> handler
 
   // load user's project from server
-  const handleLoadUserProject = async () => {
+  const handleLoadUserProject = React.useCallback(async () => {
     try {
-      const res = await svsApiPmon.sendRequest('project', 'get');
+      const res = await svsApiPmon.sendRequest('project/drawer', 'get');
       dataUserProjectSet([...res]);
     } catch (err) {
       message.error(err);
     }
-  };
+  }, [svsApiPmon]);
 
   // pagename handler
   const handleChangeCurrentPage = _currentPage => currentPageSet(_currentPage);
@@ -83,7 +84,9 @@ const Lay = () => {
   // START ~~> effect
 
   // load user's project
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    handleLoadUserProject();
+  }, [handleLoadUserProject]);
 
   // END <~~ effect
 
@@ -108,7 +111,10 @@ const Lay = () => {
         onClose={handleDrawerMenuClose}
         afterVisibleChange={handleDrawerMenuVisibleChange}
       >
-        <LayDrawerContentProject dataUserProject={dataUserProject}></LayDrawerContentProject>
+        <LayDrawerContentProject
+          dataUserProject={dataUserProject}
+          handleLoadUserProject={handleLoadUserProject}
+        ></LayDrawerContentProject>
       </Drawer>
       {/* notification drawer */}
       <Drawer
@@ -155,6 +161,7 @@ const Lay = () => {
         <CmpPrivateRoute exact path="/" component={PgDashboard}></CmpPrivateRoute>
         {/* <CmpPrivateRoute path="/dashboard" component={PgDashboard}></CmpPrivateRoute> */}
         <CmpPrivateRoute path="/account" component={PgAccount}></CmpPrivateRoute>
+        <CmpPrivateRoute path="/project/:name" component={PgProject}></CmpPrivateRoute>
         {/* not found page */}
         {/* <Route component={PgNotFound}></Route> */}
       </Layout.Content>

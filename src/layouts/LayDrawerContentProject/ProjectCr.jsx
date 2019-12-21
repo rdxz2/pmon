@@ -1,18 +1,21 @@
-import { Button, Form, Icon, Input, message, Cascader } from 'antd';
+import { Button, Form, Icon, Input, message, Cascader, Select, Spin } from 'antd';
 import React from 'react';
 
 import { CtxApi } from '../../contexts/CtxApi';
-import FormItem from 'antd/lib/form/FormItem';
-import CmpDynamicField from '../../components/CmpDynamicField';
+// import FormItem from 'antd/lib/form/FormItem';
+// import CmpDynamicField from '../../components/CmpDynamicField';
+import debounce from 'lodash/debounce';
+import { isEmptyObject } from '../../utilities/UtlDataManipulator';
+import { useHistory } from 'react-router-dom';
 
-const dummy = [
-  { value: '1', label: 'sd1', isLeaf: false },
-  { value: '2', label: 'sd2', isLeaf: false },
-  { value: '3', label: 'sd3', isLeaf: false },
-  { value: '4', label: 'sd4', isLeaf: false }
-];
+// const dummy = [
+//   { value: '1', label: 'sd1', isLeaf: false },
+//   { value: '2', label: 'sd2', isLeaf: false },
+//   { value: '3', label: 'sd3', isLeaf: false },
+//   { value: '4', label: 'sd4', isLeaf: false }
+// ];
 
-const ProjectCrWrapped = ({ form }) => {
+const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClose, form }) => {
   // START ~~> context
 
   // api
@@ -23,7 +26,10 @@ const ProjectCrWrapped = ({ form }) => {
   // START ~~> other
 
   // form validation
-  const { getFieldDecorator } = form;
+  const { getFieldDecorator, resetFields } = form;
+
+  // history
+  const history = useHistory();
 
   // END <~~ other
 
@@ -42,10 +48,23 @@ const ProjectCrWrapped = ({ form }) => {
           // values.collaborators = values.collaborators.filter(v => v !== null);
           // values.tes = values.tes.filter(v => v !== null);
 
-          // log in to identity server -> set jwt to local storage
-          await svsApiPmon.sendRequest('mproject/create', 'post', { ...values });
+          // send request to server
+          await svsApiPmon.sendRequest('project/create', 'post', { ...values });
 
+          // display success message
           message.success(`project '${values.name}' created successfully`);
+
+          // close the drawer
+          handleDrawerCreateProjectClose();
+
+          // reset the form
+          resetFields();
+
+          // reload all user's projects
+          handleLoadUserProject();
+
+          // redirect to the newly created project page
+          history.push(`/project/${values.name}`);
         } catch (err) {
           message.error(err);
         } finally {
@@ -55,12 +74,26 @@ const ProjectCrWrapped = ({ form }) => {
     });
   };
 
+  // populate select items: user
+  const handleSearchSelectUser = debounce(async searchValue => {
+    selectUserLoadingSet(true);
+
+    const res = await svsApiPmon.getDropdown('user', searchValue);
+
+    selectUserDataSet([...res]);
+    selectUserLoadingSet(false);
+  }, 500);
+
   // END <~~ handler
 
   // START ~~> state
 
   // submitting state
   const [isSubmitting, isSubmittingSet] = React.useState(false);
+
+  // select user
+  const [selectUserData, selectUserDataSet] = React.useState([]);
+  const [selectUserLoading, selectUserLoadingSet] = React.useState(false);
 
   // END <~~ state
 
@@ -77,10 +110,37 @@ const ProjectCrWrapped = ({ form }) => {
         )}
       </Form.Item>
       {/* Collaborators */}
-      <Form.Item label="Collaborators">
+      <Form.Item hasFeedback label="Collaborators">
+        {getFieldDecorator('collaborators', { rules: [{ type: 'array' }] })(
+          <Select
+            // labelInValue
+            filterOption={false}
+            mode="multiple"
+            placeholder="Collaborators"
+            onSearch={handleSearchSelectUser}
+            notFoundContent={
+              selectUserLoading ? (
+                <Spin size="small"></Spin>
+              ) : isEmptyObject(selectUserData) ? (
+                'Try to type a username'
+              ) : (
+                'User not found'
+              )
+            }
+            style={{ width: '100%' }}
+          >
+            {selectUserData.map(v => (
+              <Select.Option key={v.value} value={v.value}>
+                {v.text}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
+      </Form.Item>
+      {/* <Form.Item label="Collaborators">
         <CmpDynamicField
           name="collaborators"
-          initialValues={['1xx', '2xx', '3xx']}
+          // initialValues={['1xx', '2xx', '3xx']}
           fields={{
             name: 'collaborator',
             validation: {},
@@ -88,11 +148,11 @@ const ProjectCrWrapped = ({ form }) => {
           }}
           form={form}
         ></CmpDynamicField>
-      </Form.Item>
+      </Form.Item> */}
       {/* Image */}
       {/* Template */}
       {/* Tes */}
-      <Form.Item label="tes">
+      {/* <Form.Item label="tes">
         <CmpDynamicField
           name="tes"
           // initialValues={[
@@ -108,7 +168,7 @@ const ProjectCrWrapped = ({ form }) => {
           ]}
           form={form}
         ></CmpDynamicField>
-      </Form.Item>
+      </Form.Item> */}
       {/* submit button */}
       <Form.Item>
         <Button block type="primary" htmlType="submit" icon="save" loading={isSubmitting}>

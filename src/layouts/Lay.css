@@ -46,6 +46,7 @@
   position: fixed;
   top: 50%;
   left: -16px;
+  z-index: 1;
 }
 .drawer-button-trigger > .anticon-right {
   margin-left: 12px;

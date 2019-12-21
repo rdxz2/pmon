@@ -20,7 +20,7 @@ const AccountSettings = ({ handleChangeActiveMenu }) => {
   const handleLoadUserSettings = React.useCallback(async () => {
     try {
       // request data from server
-      const res = await svsApiPmon.sendRequest('muser/settings', 'get');
+      const res = await svsApiPmon.sendRequest('user/settings', 'get');
       // store to state
       dataAccountSettingsSet(res.userSettings);
     } catch (err) {

@@ -39,7 +39,7 @@ const AccountInformation = ({ handleChangeActiveMenu }) => {
   const handleLoadUserInformation = React.useCallback(async () => {
     try {
       // request data from server
-      const res = await svsApiPmon.sendRequest('muser/information', 'get');
+      const res = await svsApiPmon.sendRequest('user/information', 'get');
       // store to state
       dataAccountInformationSet({ ...res });
     } catch (err) {

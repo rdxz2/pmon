@@ -5,10 +5,10 @@ let reporting;
 
 switch (process.env.NODE_ENV) {
   case 'production':
-    spa = 'http://localhost:3000/#';
-    pmonidentity = 'http://localhost:5000';
-    pmonapi = 'https://localhost:5001';
-    reporting = 'http://localhost:5002';
+    spa = 'http://localhost/pmonapi/#';
+    pmonidentity = 'http://localhost/pmonidentity';
+    pmonapi = 'http://localhost/pmonapi';
+    reporting = 'http://localhost/pmonreporting';
     break;
   case 'development':
     spa = 'http://localhost:3000/#';

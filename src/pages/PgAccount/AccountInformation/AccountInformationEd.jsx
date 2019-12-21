@@ -11,7 +11,7 @@ const AccountInformationEdWrapped = ({ dataAccountInformation, dataAccountInform
   const [isSubmitting, isSubmittingSet] = React.useState(false);
 
   // context
-  const { svsApiPmonIdentity, svsApiPmon } = React.useContext(CtxApi);
+  const { svsApiPmon } = React.useContext(CtxApi);
   const { formItemLayout } = React.useContext(CtxLayouting);
 
   // others
@@ -31,7 +31,7 @@ const AccountInformationEdWrapped = ({ dataAccountInformation, dataAccountInform
           isSubmittingSet(true);
 
           // log in to identity server -> set jwt to local storage
-          await svsApiPmon.sendRequest('muser/edit', 'post', {...values});
+          await svsApiPmon.sendRequest('muser/edit', 'post', { ...values });
 
           // get logged user data
           const res = await svsApiPmon.sendRequest('muser', 'get');

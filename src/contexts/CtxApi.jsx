@@ -1,7 +1,7 @@
 import React from 'react';
 
 import SvsApiPmon from '../services/SvsApiPmon';
-import { SERVER_ADDRESSES } from '../utilities/UtlServerAddresses';
+import { SERVER_ADDRESSES } from '../constants/ConstServerAddresses';
 
 export const CtxApi = React.createContext({
   svsApiPmonIdentity: {

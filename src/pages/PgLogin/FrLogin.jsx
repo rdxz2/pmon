@@ -37,7 +37,7 @@ const FrLoginWrapped = ({ form }) => {
           await svsApiPmonIdentity.login({ username: values.username, password: values.password });
 
           // get logged user data
-          const res = await svsApiPmon.sendRequest('muser/information', 'get');
+          const res = await svsApiPmon.sendRequest('user/information', 'get');
 
           message.success(`login success, hello ${res.name}`);
 

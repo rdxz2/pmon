@@ -1,7 +1,7 @@
 import React from 'react';
 import './CmpRunningTime.css';
 import moment from 'moment';
-import { formatDateTime } from '../utilities/UtlDateFormats';
+import { formatDateTime } from '../constants/ConstDateFormats';
 
 const CmpRunningTime = ({ initial, format, isBlinking }) => {
   // START ~~> state

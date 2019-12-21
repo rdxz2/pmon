@@ -7,7 +7,7 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
   // START ~~> state
 
   // initial values count
-  const [initialValuesCount] = React.useState(!isEmptyArray(initialValues) ? initialValues.length : 1);
+  const [initialValuesCount] = React.useState(!isEmptyArray(initialValues) ? initialValues.length : 0);
 
   // END <~~ state
 
@@ -51,8 +51,8 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
     // get list of field's key
     const keys = getFieldValue(`${name}List`);
 
-    // cannot delete if there are noly one field
-    if (keys.length === 1) return;
+    // cannot delete if there are only one field
+    // if (keys.length === 1) return;
 
     // remove deleted field
     setFieldsValue({
@@ -77,7 +77,7 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
     const hasInitialValues = !isEmptyArray(initialValues);
 
     getFieldDecorator(`${name}List`, {
-      initialValue: hasInitialValues ? initialValues.map((v, k) => k) : [0]
+      initialValue: hasInitialValues ? initialValues.map((v, k) => k) : []
     });
 
     const fieldCounter = getFieldValue(`${name}List`);
@@ -107,7 +107,7 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
     const hasInitialValues = !isEmptyArray(initialValues);
 
     getFieldDecorator(`${name}List`, {
-      initialValue: hasInitialValues ? initialValues.map((v, k) => k) : [0]
+      initialValue: hasInitialValues ? initialValues.map((v, k) => k) : []
     });
 
     const fieldCounter = getFieldValue(`${name}List`);
@@ -157,10 +157,15 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
       {Array.isArray(fields) ? handleRenderMultipleFields() : handleRenderSingleFields()}
       {/* add button */}
       <Form.Item className="dynamic-field-button-add">
-        <Button block type="dashed" onClick={handleAddField}>
-          <Icon type="plus-circle-o"></Icon>
-          Add {name}
-        </Button>
+        <Row>
+          <Col span={21}>
+            <Button block type="dashed" onClick={handleAddField}>
+              <Icon type="plus-circle-o"></Icon>
+              Add {name}
+            </Button>
+          </Col>
+          <Col span={3}></Col>
+        </Row>
       </Form.Item>
     </div>
   );

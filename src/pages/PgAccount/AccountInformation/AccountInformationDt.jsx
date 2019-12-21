@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 
 import CmpDetail from '../../../components/CmpDetail';
-import { formatDateTime } from '../../../utilities/UtlDateFormats';
+import { formatDateTime } from '../../../constants/ConstDateFormats';
 
 const AccountInformationDt = ({ dataAccountInformation, dataAccountInformationLoading }) => {
   return (

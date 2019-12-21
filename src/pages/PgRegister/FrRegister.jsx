@@ -48,7 +48,7 @@ const FrRegisterWrapped = ({ form }) => {
           isSubmittingSet(true);
 
           // register user to identity server
-          await svsApiPmonIdentity.sendRequest('muser/register', 'post', { ...values });
+          await svsApiPmonIdentity.sendRequest('user/register', 'post', { ...values });
 
           message.success('register success');
 
@@ -56,7 +56,7 @@ const FrRegisterWrapped = ({ form }) => {
           await svsApiPmonIdentity.login({ username: values.username, password: values.password });
 
           // get logged user data
-          const res = await svsApiPmon.sendRequest('muser', 'get');
+          const res = await svsApiPmon.sendRequest('user', 'get');
 
           message.success(`welcome, ${res.name}`);
 

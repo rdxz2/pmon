@@ -4,7 +4,7 @@ import { Typography, Divider, message } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { CtxApi } from '../../../contexts/CtxApi';
 import moment from 'moment';
-import { formatDateTime } from '../../../utilities/UtlDateFormats';
+import { formatDateTime } from '../../../constants/ConstDateFormats';
 
 const AccountPassword = ({ handleChangeActiveMenu }) => {
   // START ~~> context
@@ -22,7 +22,7 @@ const AccountPassword = ({ handleChangeActiveMenu }) => {
 
   const handleLoadPasswordMd = React.useCallback(async () => {
     try {
-      const res = await svsApiPmon.sendRequest('muser/passwordmd', 'get');
+      const res = await svsApiPmon.sendRequest('user/passwordmd', 'get');
       passwordMdSet(res.md);
     } catch (err) {
       message.error(err);

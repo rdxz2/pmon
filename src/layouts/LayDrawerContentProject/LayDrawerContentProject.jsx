@@ -1,11 +1,12 @@
-import { Button, Drawer, Empty, List, message } from 'antd';
+import { Button, Drawer, Empty, List, message, Avatar } from 'antd';
 import React from 'react';
 
 import { CtxApi } from '../../contexts/CtxApi';
 import { isEmptyArray } from '../../utilities/UtlDataManipulator';
 import ProjectCr from './ProjectCr';
+import { Link } from 'react-router-dom';
 
-const LayDrawerContentProject = ({ dataUserProject }) => {
+const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject }) => {
   // START ~~> context
 
   // api
@@ -51,7 +52,10 @@ const LayDrawerContentProject = ({ dataUserProject }) => {
         onClose={handleDrawerCreateProjectClose}
       >
         {/* create project form */}
-        <ProjectCr></ProjectCr>
+        <ProjectCr
+          handleLoadUserProject={handleLoadUserProject}
+          handleDrawerCreateProjectClose={handleDrawerCreateProjectClose}
+        ></ProjectCr>
       </Drawer>
       {/* project list */}
       {!isEmptyArray(dataUserProject) ? (
@@ -61,7 +65,11 @@ const LayDrawerContentProject = ({ dataUserProject }) => {
           dataSource={dataUserProject}
           renderItem={item => (
             <List.Item>
-              <List.Item.Meta avatar={item.avatar} title={item.title} description={item.description}></List.Item.Meta>
+              <List.Item.Meta
+                avatar={<Avatar src={item.image}></Avatar>}
+                title={<Link to={`/project/${item.nameNormalized}`}>{item.name}</Link>}
+                description={item.description}
+              ></List.Item.Meta>
             </List.Item>
           )}
         ></List>
