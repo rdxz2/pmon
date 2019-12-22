@@ -1,20 +1,20 @@
 
-// START ~~> state
+// START --- state
 
-// END <~~ state
+// END --- state
 
-// START ~~> context
+// START --- context
 
-// END <~~ context
+// END --- context
 
-// START ~~> other
+// START --- other variables
 
-// END <~~ other
+// END --- other variables
 
-// START ~~> handler
+// START --- handler
 
-// END <~~ handler
+// END --- handler
 
-// START ~~> effect
+// START --- effect
 
-// END <~~ effect
+// END --- effect

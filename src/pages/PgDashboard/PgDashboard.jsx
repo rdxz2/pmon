@@ -1,16 +1,35 @@
 import React from 'react';
-import { message } from 'antd';
-import { CtxApi } from '../../contexts/CtxApi';
-import useDocumentTitle from '../../hooks/UseDocumentTitle';
 
-const PgDashboard = ({ history }) => {
-  // state
+import { CtxPageTitle } from '../../contexts/CtxPageTitle';
 
-  // effect
-  useDocumentTitle('Dashboard');
+const PgDashboard = () => {
+  // START --- state
 
-  // context
-  const { svsApiPmon } = React.useContext(CtxApi);
+  // END --- state
+
+  // START --- context
+
+  // page title
+  const { handlePageTitleChange } = React.useContext(CtxPageTitle);
+
+  // END --- context
+
+  // START --- other variables
+
+  // END --- other variables
+
+  // START --- handler
+
+  // END --- handler
+
+  // START --- effect
+
+  // change page title
+  React.useEffect(() => {
+    handlePageTitleChange('Dashboard');
+  }, [handlePageTitleChange]);
+
+  // END --- effect
 
   return <div>page dashbaord</div>;
 };

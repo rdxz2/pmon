@@ -1,11 +1,12 @@
+import { Button, Form, Icon, Input, message } from 'antd';
 import React from 'react';
-import { Form, Input, Icon, message, Button } from 'antd';
-import { CtxLayouting } from '../../../contexts/CtxLayouting';
-import { CtxApi } from '../../../contexts/CtxApi';
 import { useHistory } from 'react-router-dom';
 
+import { CtxApi } from '../../../contexts/CtxApi';
+import { CtxLayouting } from '../../../contexts/CtxLayouting';
+
 const AccountPasswordEdWrapped = ({ form }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmonIdentity } = React.useContext(CtxApi);
@@ -13,9 +14,9 @@ const AccountPasswordEdWrapped = ({ form }) => {
   // form layouting
   const { formItemLayout } = React.useContext(CtxLayouting);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
   // form field validator
   const { getFieldDecorator } = form;
@@ -23,12 +24,12 @@ const AccountPasswordEdWrapped = ({ form }) => {
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> state
+  // START --- state
 
   // main data
-  const [data, dataSet] = React.useState({ passwordOld: '', passwordNew: '', passwordNewConfirm: '' });
+  // const [data, dataSet] = React.useState({ passwordOld: '', passwordNew: '', passwordNewConfirm: '' });
 
   // password dirty
   const [isPasswordDirty, isPasswordDirtySet] = React.useState(false);
@@ -36,13 +37,13 @@ const AccountPasswordEdWrapped = ({ form }) => {
   // form submitting
   const [isSubmitting, isSubmittingSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // END --- effect
 
-  // START ~~> handler
+  // START --- handler
 
   // submit (edit password)
   const handleSubmit = async event => {
@@ -56,7 +57,7 @@ const AccountPasswordEdWrapped = ({ form }) => {
           // change user password from identity server
           await svsApiPmonIdentity.sendRequest('user/changepassword', 'post', { ...values });
 
-          message.success('password changed successfully');
+          message.success('Password changed successfully');
 
           // redirect to home
           history.replace('/');
@@ -83,7 +84,7 @@ const AccountPasswordEdWrapped = ({ form }) => {
     else callback();
   };
 
-  // END <~~ handler
+  // END --- handler
 
   return (
     <Form {...formItemLayout.body} onSubmit={handleSubmit} className="account-password">

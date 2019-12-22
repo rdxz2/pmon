@@ -4,7 +4,7 @@ import React from 'react';
 import CmpDetail from '../../../components/CmpDetail';
 import { formatDateTime } from '../../../constants/ConstDateFormats';
 
-const AccountInformationDt = ({ dataAccountInformation, dataAccountInformationLoading }) => {
+const AccountInformationDt = ({ dataAccountInformation }) => {
   return (
     <>
       <CmpDetail label="Username">{dataAccountInformation.username}</CmpDetail>

@@ -4,12 +4,12 @@ import { Redirect, Route } from 'react-router-dom';
 import { CtxApi } from '../contexts/CtxApi';
 
 const CmpPrivateRoute = ({ component: Component, ...rest }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
   return (
     <Route

@@ -1,24 +1,24 @@
-import React from 'react';
-import AccountPasswordEd from './AccountPasswordEd';
-import { Typography, Divider, message } from 'antd';
-import { useHistory } from 'react-router-dom';
-import { CtxApi } from '../../../contexts/CtxApi';
+import { message, Typography } from 'antd';
 import moment from 'moment';
+import React from 'react';
+
 import { formatDateTime } from '../../../constants/ConstDateFormats';
+import { CtxApi } from '../../../contexts/CtxApi';
+import AccountPasswordEd from './AccountPasswordEd';
 
 const AccountPassword = ({ handleChangeActiveMenu }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   const handleLoadPasswordMd = React.useCallback(async () => {
     try {
@@ -29,16 +29,16 @@ const AccountPassword = ({ handleChangeActiveMenu }) => {
     }
   }, [svsApiPmon]);
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> state
+  // START --- state
 
   // password last modified date
   const [passwordMd, passwordMdSet] = React.useState(null);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
   // load user's password last modified date
   React.useEffect(() => {
@@ -50,7 +50,7 @@ const AccountPassword = ({ handleChangeActiveMenu }) => {
     handleChangeActiveMenu('changepassword');
   }, [handleChangeActiveMenu]);
 
-  // END <~~ effect
+  // END --- effect
   return (
     <>
       {/* title */}

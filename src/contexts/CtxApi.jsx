@@ -20,7 +20,7 @@ export const CtxApi = React.createContext({
 });
 
 const CtxPvdApi = ({ children }) => {
-  // START ~~> state
+  // START --- state
 
   // pmonidentity
   const [svsApiPmonIdentity] = React.useState(
@@ -38,7 +38,7 @@ const CtxPvdApi = ({ children }) => {
     })
   );
 
-  // END <~~ state
+  // END --- state
 
   return <CtxApi.Provider value={{ svsApiPmonIdentity, svsApiPmon }}>{children}</CtxApi.Provider>;
 };

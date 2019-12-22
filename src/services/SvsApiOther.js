@@ -17,7 +17,11 @@ export default class SvsApiOther extends SvsJwt {
     const authorization = this.isAuthenticated() ? `Bearer ${this.getJwt(this.jwtString)}` : null;
 
     try {
-      return await Axios(`${this.baseUrl}/${endPointName}`, { method, data, headers: { Authorization: authorization } });
+      return await Axios(`${this.baseUrl}/${endPointName}`, {
+        method,
+        data,
+        headers: { Authorization: authorization }
+      });
     } catch (err) {
       let message = '';
 
@@ -30,16 +34,16 @@ export default class SvsApiOther extends SvsJwt {
             break;
           // unauthorized
           case 401:
-            message = 'your are currently not authorized, please log in again';
+            message = 'Your are currently not authorized, please log in again';
             this.logOut();
             // if (this.jwtString === 'pmonapijwt') window.location.reload();
             break;
           // internal server error
           case 500:
-            message = 'there are errors in server';
+            message = 'There are errors in server';
             break;
           default:
-            message = 'failed to fetch response from server';
+            message = 'Failed to fetch response from server';
             break;
         }
       }
@@ -53,7 +57,12 @@ export default class SvsApiOther extends SvsJwt {
   // send request (tabel)
   async getTable(endPointName = '', show = 0, page = 0, search = {}, sort = {}) {
     try {
-      const res = await this.send(`${endPointName}/table`, 'post', { show, page, search, sort }, 'failed getting table data');
+      const res = await this.send(
+        `${endPointName}/table`,
+        'post',
+        { show, page, search, sort },
+        'Failed getting table data'
+      );
       const tableData = {
         // kasih key untuk setiap row
         rows: res.data.data.map((v, k) => ({ ...v, key: k })),
@@ -69,7 +78,12 @@ export default class SvsApiOther extends SvsJwt {
   // send request (dropdown)
   async getDropdown(endPointName = '', search = '', requiredIds = {}, alreadyIds = [], show = 100) {
     try {
-      const res = await this.send(`${endPointName}/dropdown`, 'post', { search, requiredIds, alreadyIds, show }, 'failed getting dropdown data');
+      const res = await this.send(
+        `${endPointName}/dropdown`,
+        'post',
+        { search, requiredIds, alreadyIds, show },
+        'Failed getting dropdown data'
+      );
       return res.data;
     } catch (err) {
       throw err.message;
@@ -79,7 +93,7 @@ export default class SvsApiOther extends SvsJwt {
   // send request (anything)
   async sendRequest(endPointName = '', method = '', data = {}) {
     try {
-      const res = await this.send(endPointName, method, data, 'failed sending request to server');
+      const res = await this.send(endPointName, method, data, 'Failed sending request to server');
       return res.data;
     } catch (err) {
       throw err.message;
@@ -88,7 +102,8 @@ export default class SvsApiOther extends SvsJwt {
 
   // utils
   login = async dataLogin => {
-    if (this.jwtString !== 'pmonidentityjwt') throw new Error('cannot do identity login on non pmonapi identity server').message;
+    if (this.jwtString !== 'pmonidentityjwt')
+      throw new Error('Cannot do identity login on non pmonapi identity server').message;
 
     try {
       const res = await Axios.post(

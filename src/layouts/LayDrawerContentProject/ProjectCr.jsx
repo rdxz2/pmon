@@ -1,13 +1,13 @@
-import { Button, Form, Icon, Input, message, Cascader, Select, Spin } from 'antd';
-import React from 'react';
-
-import { CtxApi } from '../../contexts/CtxApi';
-// import FormItem from 'antd/lib/form/FormItem';
-// import CmpDynamicField from '../../components/CmpDynamicField';
+import { Button, Form, Icon, Input, message, Select, Spin } from 'antd';
 import debounce from 'lodash/debounce';
-import { isEmptyObject } from '../../utilities/UtlDataManipulator';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { CtxApi } from '../../contexts/CtxApi';
+import { isEmptyObject } from '../../utilities/UtlDataManipulator';
+
+// import FormItem from 'antd/lib/form/FormItem';
+// import CmpDynamicField from '../../components/CmpDynamicField';
 // const dummy = [
 //   { value: '1', label: 'sd1', isLeaf: false },
 //   { value: '2', label: 'sd2', isLeaf: false },
@@ -16,14 +16,14 @@ import { useHistory } from 'react-router-dom';
 // ];
 
 const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClose, form }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
   // form validation
   const { getFieldDecorator, resetFields } = form;
@@ -31,9 +31,9 @@ const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClos
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // submit (create project)
   const handleSubmit = event => {
@@ -52,7 +52,7 @@ const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClos
           await svsApiPmon.sendRequest('project/create', 'post', { ...values });
 
           // display success message
-          message.success(`project '${values.name}' created successfully`);
+          message.success(`Project '${values.name}' created successfully`);
 
           // close the drawer
           handleDrawerCreateProjectClose();
@@ -84,9 +84,9 @@ const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClos
     selectUserLoadingSet(false);
   }, 500);
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> state
+  // START --- state
 
   // submitting state
   const [isSubmitting, isSubmittingSet] = React.useState(false);
@@ -95,11 +95,11 @@ const ProjectCrWrapped = ({ handleLoadUserProject, handleDrawerCreateProjectClos
   const [selectUserData, selectUserDataSet] = React.useState([]);
   const [selectUserLoading, selectUserLoadingSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <Form onSubmit={handleSubmit}>

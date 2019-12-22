@@ -1,41 +1,37 @@
-import { Button, Drawer, Empty, List, message, Avatar } from 'antd';
+import { Avatar, Button, Drawer, Empty, List } from 'antd';
 import React from 'react';
-
-import { CtxApi } from '../../contexts/CtxApi';
-import { isEmptyArray } from '../../utilities/UtlDataManipulator';
-import ProjectCr from './ProjectCr';
 import { Link } from 'react-router-dom';
 
-const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject }) => {
-  // START ~~> context
+import { isEmptyArray } from '../../utilities/UtlDataManipulator';
+import ProjectCr from './ProjectCr';
 
-  // api
-  const { svsApiPmon } = React.useContext(CtxApi);
+const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject, handleDrawerMenuClose }) => {
+  // START --- context
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // create project drawer open/close handler
   const handleDrawerCreateProjectOpen = () => isDrawerCreactProjectOpenSet(true);
   const handleDrawerCreateProjectClose = () => isDrawerCreactProjectOpenSet(false);
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> state
+  // START --- state
 
   // create project drawer
   const [isDrawerCreactProjectOpen, isDrawerCreactProjectOpenSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <>
@@ -67,7 +63,11 @@ const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject }) => 
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar src={item.image}></Avatar>}
-                title={<Link to={`/project/${item.nameNormalized}`}>{item.name}</Link>}
+                title={
+                  <Link to={`/project/${item.nameNormalized}`} onClick={handleDrawerMenuClose}>
+                    {item.name}
+                  </Link>
+                }
                 description={item.description}
               ></List.Item.Meta>
             </List.Item>

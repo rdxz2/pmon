@@ -1,7 +1,6 @@
 import Axios from 'axios';
 import decode from 'jwt-decode';
 import { stringify } from 'querystring';
-import PropTypes from 'prop-types';
 
 import { IDENTITY_CONFIGURATION } from '../constants/ConstIdentityConfigurations';
 
@@ -33,20 +32,20 @@ export default class SvsApiPmon {
             break;
           // unauthorized
           case 401:
-            message = 'your are currently not authorized, please log in again';
+            message = 'Your are currently not authorized, please log in again';
             this.logout();
             window.location = '/login';
             break;
           // not found
           case 404:
-            message = 'server not found';
+            message = 'Server not found';
             break;
           // internal server error
           case 500:
-            message = 'there are errors in server';
+            message = 'There are errors in server';
             break;
           default:
-            message = 'failed to get response from server';
+            message = 'Failed to get response from server';
             break;
         }
       }
@@ -64,7 +63,7 @@ export default class SvsApiPmon {
         `${endPointName}/table`,
         'post',
         { show, page, search, sort },
-        'failed getting table data'
+        'Failed getting table data'
       );
       const tableData = {
         // kasih key untuk setiap row
@@ -85,7 +84,7 @@ export default class SvsApiPmon {
         `${endPointName}/dd`,
         'post',
         { search, requiredIds, alreadyIds, show },
-        'failed getting dropdown data'
+        'Failed getting dropdown data'
       );
       return res.data;
     } catch (err) {
@@ -101,7 +100,7 @@ export default class SvsApiPmon {
       for (key in data)
         if (data.hasOwnProperty(key)) if (Array.isArray(data[key])) data[key] = data[key].filter(v => v !== null);
 
-      const res = await this.send(endPointName, method, data, 'failed sending request to server');
+      const res = await this.send(endPointName, method, data, 'Failed sending request to server');
       return res.data;
     } catch (err) {
       throw err.message;
@@ -126,7 +125,7 @@ export default class SvsApiPmon {
 
       this.setToken(res.data.access_token);
     } catch (err) {
-      throw new Error('wrong username/password').message;
+      throw new Error('Wrong username/password').message;
     }
   };
 

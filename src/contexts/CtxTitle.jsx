@@ -22,12 +22,12 @@ const titleReducer = (state, action) => {
 };
 
 const CtxTitleProvider = ({ children }) => {
-  // STATE ~~> start
+  // STATE --- start
 
   // title
   const [title, titleDispatch] = React.useReducer(titleReducer, []);
 
-  // STATE <~~ end
+  // STATE --- end
 
   return <CtxTitle.Provider value={{ title, titleDispatch }}>{children}</CtxTitle.Provider>;
 };

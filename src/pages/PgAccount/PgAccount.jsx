@@ -2,41 +2,47 @@ import './PgAccount.css';
 
 import { Icon, Menu } from 'antd';
 import React from 'react';
-import { Link, Route, useHistory } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 import AccountInformation from './AccountInformation/AccountInformation';
 import AccountPassword from './AccountPassword/AccountPassword';
 import AccountSettings from './AccountSettings/AccountSettings';
+import { CtxPageTitle } from '../../contexts/CtxPageTitle';
 
 const PgAccount = ({ match }) => {
-  // START ~~> context
+  // START --- context
 
-  // END <~~ context
+  // page title
+  const { handlePageTitleChange } = React.useContext(CtxPageTitle);
 
-  // START ~~> other
+  // END --- context
 
-  // history
-  const history = useHistory();
+  // START --- other variables
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> state
+  // START --- state
 
   // currently active menu
   const [activeMenu, activeMenuSet] = React.useState('');
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // change page title
+  React.useEffect(() => {
+    handlePageTitleChange('Account');
+  }, [handlePageTitleChange]);
 
-  // START ~~> handler
+  // END --- effect
+
+  // START --- handler
 
   // change currently active menu
   const handleChangeActiveMenu = _activeMenu => activeMenuSet(_activeMenu);
 
-  // END <~~ handler
+  // END --- handler
 
   return (
     <div className="page-account">

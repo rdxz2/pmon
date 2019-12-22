@@ -1,28 +1,27 @@
-import { Avatar, Button, Divider, message, Skeleton, Typography } from 'antd';
+import { Avatar, Button, message, Skeleton, Typography } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { CtxApi } from '../../../contexts/CtxApi';
-import { isEmptyObject } from '../../../utilities/UtlDataManipulator';
 import AccountInformationDt from './AccountInformationDt';
 import AccountInformationEd from './AccountInformationEd';
 
 const AccountInformation = ({ handleChangeActiveMenu }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmonIdentity, svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> state
+  // START --- state
 
   // user detail
   const [dataAccountInformation, dataAccountInformationSet] = React.useState({});
@@ -31,19 +30,20 @@ const AccountInformation = ({ handleChangeActiveMenu }) => {
   // information/edit mode
   const [isInformation, isInformationSet] = React.useState(true);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> handler
+  // START --- handler
 
   // get user's details
   const handleLoadUserInformation = React.useCallback(async () => {
     try {
-      // request data from server
+      dataAccountInformationLoadingSet(true);
       const res = await svsApiPmon.sendRequest('user/information', 'get');
-      // store to state
       dataAccountInformationSet({ ...res });
     } catch (err) {
       message.error(err);
+    } finally {
+      dataAccountInformationLoadingSet(false);
     }
   }, [svsApiPmon]);
 
@@ -55,15 +55,15 @@ const AccountInformation = ({ handleChangeActiveMenu }) => {
     try {
       svsApiPmonIdentity.logout();
 
-      message.info('your are logged out');
+      message.info('Your are logged out');
 
       history.replace('/login');
     } catch (err) {}
   };
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> effect
+  // START --- effect
 
   // change active menu
   React.useEffect(() => {
@@ -75,14 +75,14 @@ const AccountInformation = ({ handleChangeActiveMenu }) => {
     handleLoadUserInformation();
   }, [handleLoadUserInformation]);
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <>
       {/* title */}
       <Typography.Title level={3}>Your account's information</Typography.Title>
       {/* content */}
-      {!isEmptyObject(dataAccountInformation) ? (
+      {!dataAccountInformationLoading ? (
         <>
           {/* action buttons */}
           <div className="action-buttons">
@@ -99,15 +99,9 @@ const AccountInformation = ({ handleChangeActiveMenu }) => {
           </div>
           {/* show whether information/edit mode */}
           {isInformation ? (
-            <AccountInformationDt
-              dataAccountInformation={dataAccountInformation}
-              dataAccountInformationLoading={dataAccountInformationLoading}
-            ></AccountInformationDt>
+            <AccountInformationDt dataAccountInformation={dataAccountInformation}></AccountInformationDt>
           ) : (
-            <AccountInformationEd
-              dataAccountInformation={dataAccountInformation}
-              dataAccountInformationLoading={dataAccountInformationLoading}
-            ></AccountInformationEd>
+            <AccountInformationEd dataAccountInformation={dataAccountInformation}></AccountInformationEd>
           )}
         </>
       ) : (

@@ -5,14 +5,14 @@ import { CtxApi } from '../../contexts/CtxApi';
 import { useHistory } from 'react-router-dom';
 
 const FrLoginWrapped = ({ form }) => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmonIdentity, svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
   // form field validator
   const { getFieldDecorator } = form;
@@ -20,9 +20,9 @@ const FrLoginWrapped = ({ form }) => {
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // submit (log in)
   const handleSubmit = event => {
@@ -39,7 +39,7 @@ const FrLoginWrapped = ({ form }) => {
           // get logged user data
           const res = await svsApiPmon.sendRequest('user/information', 'get');
 
-          message.success(`login success, hello ${res.name}`);
+          message.success(`Login success, hello ${res.name}!`);
 
           // redirect to home
           history.replace('/');
@@ -52,25 +52,29 @@ const FrLoginWrapped = ({ form }) => {
     });
   };
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> state
+  // START --- state
 
   // submitting flag
   const [isSubmitting, isSubmittingSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <Form onSubmit={handleSubmit}>
       {/* username */}
       <Form.Item>
         {getFieldDecorator('username', { rules: [{ required: true, message: 'username is required' }] })(
-          <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Your username"></Input>
+          <Input
+            autoFocus
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Your username"
+          ></Input>
         )}
       </Form.Item>
       {/* password */}

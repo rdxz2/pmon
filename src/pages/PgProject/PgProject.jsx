@@ -3,25 +3,25 @@ import { CtxApi } from '../../contexts/CtxApi';
 import { message } from 'antd';
 
 const PgProject = ({ match }) => {
-  // START ~~> state
+  // START --- state
 
   // project data
   const [dataProject, dataProjectSet] = React.useState({});
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // load project's data
   const handleLoadProjectData = React.useCallback(async () => {
@@ -33,16 +33,16 @@ const PgProject = ({ match }) => {
     }
   }, [match.params.name, svsApiPmon]);
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> effect
+  // START --- effect
 
   // load project's data
   React.useEffect(() => {
     handleLoadProjectData();
   }, [handleLoadProjectData]);
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <>

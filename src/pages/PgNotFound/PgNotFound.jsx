@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PgNotFound = () => {
-  return 'notfound';
+  return <></>;
 };
 
 export default PgNotFound;

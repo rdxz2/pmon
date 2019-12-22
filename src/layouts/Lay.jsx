@@ -1,39 +1,39 @@
 import './Lay.css';
 
-import { Menu, Button, Drawer, Layout, PageHeader, Descriptions, Icon, Badge, Avatar, Input, message } from 'antd';
+import { Badge, Button, Drawer, Layout, message, PageHeader, Divider } from 'antd';
+import moment from 'moment';
 import React from 'react';
+import { useHistory, Link } from 'react-router-dom';
 
 import CmpPrivateRoute from '../components/CmpPrivateRoute';
-import PgDashboard from '../pages/PgDashboard/PgDashboard';
-import PgAccount from '../pages/PgAccount/PgAccount';
 import CmpRunningTime from '../components/CmpRunningTime';
-import moment from 'moment';
+import { CtxApi } from '../contexts/CtxApi';
+import PgAccount from '../pages/PgAccount/PgAccount';
+import PgDashboard from '../pages/PgDashboard/PgDashboard';
+import PgProject from '../pages/PgProject/PgProject';
 import LayDrawerContentNotification from './LayDrawerContentNotifications/LayDrawerContentNotifications';
 import LayDrawerContentProject from './LayDrawerContentProject/LayDrawerContentProject';
-
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
-import { useHistory } from 'react-router-dom';
-import PgNotFound from '../pages/PgNotFound/PgNotFound';
-import { CtxApi } from '../contexts/CtxApi';
-import PgProject from '../pages/PgProject/PgProject';
+import { CtxPageTitle } from '../contexts/CtxPageTitle';
 
 const Lay = () => {
-  // START ~~> context
+  // START --- context
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
 
-  // END <~~ context
+  // page title
+  const { pageTitle } = React.useContext(CtxPageTitle);
 
-  // START ~~> other
+  // END --- context
+
+  // START --- other variables
 
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // load user's project from server
   const handleLoadUserProject = React.useCallback(async () => {
@@ -44,9 +44,6 @@ const Lay = () => {
       message.error(err);
     }
   }, [svsApiPmon]);
-
-  // pagename handler
-  const handleChangeCurrentPage = _currentPage => currentPageSet(_currentPage);
 
   // menu drawer open/close handler
   const handleDrawerMenuOpen = () => isDrawerMenuOpenSet(true);
@@ -65,30 +62,27 @@ const Lay = () => {
   const handleDrawerNotificationOpen = () => isDrawerNotificationOpenSet(true);
   const handleDrawerNotificationClose = () => isDrawerNotificationOpenSet(false);
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> state
+  // START --- state
 
   // user's project
   const [dataUserProject, dataUserProjectSet] = React.useState([]);
-
-  // current active page
-  const [currentPage, currentPageSet] = React.useState('');
 
   // drawer
   const [isDrawerMenuOpen, isDrawerMenuOpenSet] = React.useState(false);
   const [isDrawerNotificationOpen, isDrawerNotificationOpenSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> effect
+  // START --- effect
 
   // load user's project
   React.useEffect(() => {
     handleLoadUserProject();
   }, [handleLoadUserProject]);
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <Layout>
@@ -114,6 +108,7 @@ const Lay = () => {
         <LayDrawerContentProject
           dataUserProject={dataUserProject}
           handleLoadUserProject={handleLoadUserProject}
+          handleDrawerMenuClose={handleDrawerMenuClose}
         ></LayDrawerContentProject>
       </Drawer>
       {/* notification drawer */}
@@ -129,8 +124,14 @@ const Lay = () => {
       <PageHeader
         ghost={false}
         onBack={() => history.goBack()}
-        title={currentPage}
-        subTitle="... page subtitle"
+        title={
+          <>
+            <Link to="/">pmon</Link>
+            <Divider type="vertical"></Divider>
+            {pageTitle}
+          </>
+        }
+        // subTitle="... page subtitle"
         className="page-header"
         extra={[
           // running time

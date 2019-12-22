@@ -5,7 +5,7 @@ import { CtxApi } from '../../contexts/CtxApi';
 import { useHistory } from 'react-router-dom';
 
 const FrRegisterWrapped = ({ form }) => {
-  // START ~~> state
+  // START --- state
 
   // password dirty
   const [isPasswordDirty, isPasswordDirtySet] = React.useState(false);
@@ -13,20 +13,23 @@ const FrRegisterWrapped = ({ form }) => {
   // form submitting
   const [isSubmitting, isSubmittingSet] = React.useState(false);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> context
+  // START --- context
 
+  // api
   const { svsApiPmonIdentity, svsApiPmon } = React.useContext(CtxApi);
+
+  // form layouting
   const { formItemLayout } = React.useContext(CtxLayouting);
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> effect
+  // START --- effect
 
-  // END <~~ effect
+  // END --- effect
 
-  // START ~~> other
+  // START --- other variables
 
   // form field validator
   const { getFieldDecorator } = form;
@@ -34,9 +37,9 @@ const FrRegisterWrapped = ({ form }) => {
   // history
   const history = useHistory();
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // submit (register)
   const handleSubmit = event => {
@@ -50,7 +53,7 @@ const FrRegisterWrapped = ({ form }) => {
           // register user to identity server
           await svsApiPmonIdentity.sendRequest('user/register', 'post', { ...values });
 
-          message.success('register success');
+          message.success('Register success');
 
           // log in to identity server -> set jwt to local storage
           await svsApiPmonIdentity.login({ username: values.username, password: values.password });
@@ -58,7 +61,7 @@ const FrRegisterWrapped = ({ form }) => {
           // get logged user data
           const res = await svsApiPmon.sendRequest('user', 'get');
 
-          message.success(`welcome, ${res.name}`);
+          message.success(`Welcome to pmon, ${res.name}!`);
 
           // redirect to home
           history.replace('/');
@@ -85,7 +88,7 @@ const FrRegisterWrapped = ({ form }) => {
     else callback();
   };
 
-  // END <~~ handler
+  // END --- handler
 
   return (
     <Form {...formItemLayout.body} onSubmit={handleSubmit}>

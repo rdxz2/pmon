@@ -4,7 +4,7 @@ import moment from 'moment';
 import { formatDateTime } from '../constants/ConstDateFormats';
 
 const CmpRunningTime = ({ initial, format, isBlinking }) => {
-  // START ~~> state
+  // START --- state
 
   // time
   const [time, timeSet] = React.useState(moment(initial));
@@ -12,17 +12,17 @@ const CmpRunningTime = ({ initial, format, isBlinking }) => {
   // time
   const [isHalfSecond, isHalfSecondSet] = React.useState(true);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> context
+  // START --- context
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // add 1/2 second
   const handleAddHalfSecond = React.useCallback(() => {
@@ -44,9 +44,9 @@ const CmpRunningTime = ({ initial, format, isBlinking }) => {
     return timeFormatted;
   };
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> effect
+  // START --- effect
 
   // interval setter/clearer
   React.useEffect(() => {
@@ -59,7 +59,7 @@ const CmpRunningTime = ({ initial, format, isBlinking }) => {
     };
   }, [handleAddHalfSecond]);
 
-  // END <~~ effect
+  // END --- effect
 
   return <span className="running-time">{handleRenderTimeFormatted(time)}</span>;
 };

@@ -8,7 +8,7 @@ export const CtxLayouting = React.createContext({
 });
 
 const CtxPvdLayouting = ({ children }) => {
-  // START ~~> state
+  // START --- state
 
   // label & input field in form
   const [formItemLayout] = React.useState({
@@ -38,7 +38,7 @@ const CtxPvdLayouting = ({ children }) => {
     }
   });
 
-  // END <~~ state
+  // END --- state
 
   return <CtxLayouting.Provider value={{ formItemLayout }}>{children}</CtxLayouting.Provider>;
 };

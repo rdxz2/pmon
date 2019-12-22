@@ -4,18 +4,18 @@ import './CmpDynamicField.css';
 import { isEmptyArray } from '../utilities/UtlDataManipulator';
 
 const CmpDynamicField = ({ initialValues, name, fields, form }) => {
-  // START ~~> state
+  // START --- state
 
   // initial values count
   const [initialValuesCount] = React.useState(!isEmptyArray(initialValues) ? initialValues.length : 0);
 
-  // END <~~ state
+  // END --- state
 
-  // START ~~> context
+  // START --- context
 
-  // END <~~ context
+  // END --- context
 
-  // START ~~> other
+  // START --- other variables
 
   // form field validation
   const { getFieldDecorator, getFieldValue, setFieldsValue } = form;
@@ -23,9 +23,9 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
   // current data (array) to be submitted length (includes empty array index)
   const [currentDataLength, currentDataLengthSet] = React.useState(0);
 
-  // END <~~ other
+  // END --- other variables
 
-  // START ~~> handler
+  // START --- handler
 
   // add a field
   const handleAddField = () => {
@@ -135,9 +135,9 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
     ));
   };
 
-  // END <~~ handler
+  // END --- handler
 
-  // START ~~> effect
+  // START --- effect
 
   // load initial data
   React.useEffect(() => {
@@ -149,7 +149,7 @@ const CmpDynamicField = ({ initialValues, name, fields, form }) => {
     });
   }, [initialValuesCount]);
 
-  // END <~~ effect
+  // END --- effect
 
   return (
     <div className="dynamic-field">
