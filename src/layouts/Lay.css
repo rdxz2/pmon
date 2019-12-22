@@ -31,7 +31,7 @@
   /* min-height: 380px; */
 }
 
-/* dummy drawer */
+/* dummy menu drawer */
 .drawer-dummy {
   background: #178fff;
   position: fixed;
@@ -41,7 +41,7 @@
   z-index: 1;
 }
 
-/* drawer trigger button */
+/* menu drawer trigger button */
 .drawer-button-trigger {
   position: fixed;
   top: 50%;
@@ -50,6 +50,25 @@
 }
 .drawer-button-trigger > .anticon-right {
   margin-left: 12px;
+}
+
+/* notification drawer infinite scroll */
+.drawer-notification .ant-drawer-body {
+  height: calc(100vh - 55px);
+  overflow: auto;
+  padding: 0;
+}
+.drawer-notification .drawer-notification-infinite-scroll {
+  padding: 24px;
+}
+.drawer-notification .drawer-notification-spinner {
+  text-align: center;
+}
+.drawer-notification .ant-list-item-meta-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 160px;
 }
 
 /* top nav */

@@ -1,6 +1,13 @@
-import React from 'react';
-import { CtxApi } from '../../contexts/CtxApi';
+import './PgProject.css';
+
 import { message } from 'antd';
+import React from 'react';
+
+import { CtxPageTitle } from '../../contexts/CtxPageTitle';
+import { CtxApi } from '../../contexts/CtxApi';
+import { isEmptyObject } from '../../utilities/UtlDataManipulator';
+import ProjectDashbnoard from './Project/ProjectDashboard';
+import ProjectInvitation from './Project/ProjectInvitation';
 
 const PgProject = ({ match }) => {
   // START --- state
@@ -11,6 +18,9 @@ const PgProject = ({ match }) => {
   // END --- state
 
   // START --- context
+
+  // page title
+  const { handlePageTitleChange } = React.useContext(CtxPageTitle);
 
   // api
   const { svsApiPmon } = React.useContext(CtxApi);
@@ -37,6 +47,11 @@ const PgProject = ({ match }) => {
 
   // START --- effect
 
+  // change page title
+  React.useEffect(() => {
+    handlePageTitleChange(dataProject.name || '');
+  }, [dataProject.name, handlePageTitleChange]);
+
   // load project's data
   React.useEffect(() => {
     handleLoadProjectData();
@@ -44,11 +59,14 @@ const PgProject = ({ match }) => {
 
   // END --- effect
 
-  return (
-    <>
-      <div>Pg Project</div>
-      <div>{dataProject.name}</div>
-    </>
+  return !isEmptyObject(dataProject) ? (
+    dataProject.isInvitationAccepted ? (
+      <ProjectDashbnoard></ProjectDashbnoard>
+    ) : (
+      <ProjectInvitation></ProjectInvitation>
+    )
+  ) : (
+    'loading..'
   );
 };
 

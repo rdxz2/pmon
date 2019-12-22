@@ -14,6 +14,7 @@ import PgProject from '../pages/PgProject/PgProject';
 import LayDrawerContentNotification from './LayDrawerContentNotifications/LayDrawerContentNotifications';
 import LayDrawerContentProject from './LayDrawerContentProject/LayDrawerContentProject';
 import { CtxPageTitle } from '../contexts/CtxPageTitle';
+import { isEmptyObject } from '../utilities/UtlDataManipulator';
 
 const Lay = () => {
   // START --- context
@@ -26,6 +27,20 @@ const Lay = () => {
 
   // END --- context
 
+  // START --- state
+
+  // user's project
+  const [dataUserProjects, dataUserProjectsSet] = React.useState([]);
+
+  // user's notification
+  const [dataUserNotifications, dataUserNotificationsSet] = React.useState({});
+
+  // drawer
+  const [isDrawerMenuOpen, isDrawerMenuOpenSet] = React.useState(false);
+  const [isDrawerNotificationOpen, isDrawerNotificationOpenSet] = React.useState(false);
+
+  // END --- state
+
   // START --- other variables
 
   // history
@@ -35,15 +50,35 @@ const Lay = () => {
 
   // START --- handler
 
-  // load user's project from server
-  const handleLoadUserProject = React.useCallback(async () => {
+  // load user's project
+  const handleLoadUserProjects = React.useCallback(async () => {
     try {
       const res = await svsApiPmon.sendRequest('project/drawer', 'get');
-      dataUserProjectSet([...res]);
+      dataUserProjectsSet([...res]);
     } catch (err) {
       message.error(err);
     }
   }, [svsApiPmon]);
+
+  // load user's notification
+  const handleLoadUserNotifications = React.useCallback(
+    async page => {
+      try {
+        const res = await svsApiPmon.sendRequest('notification/drawer', 'post', { page, show: 20 });
+        dataUserNotificationsSet(_dataUserNotifications =>
+          isEmptyObject(_dataUserNotifications)
+            ? { ...res }
+            : {
+                ...res,
+                notifications: [..._dataUserNotifications.notifications, ...res.notifications]
+              }
+        );
+      } catch (err) {
+        message.error(err);
+      }
+    },
+    [svsApiPmon]
+  );
 
   // menu drawer open/close handler
   const handleDrawerMenuOpen = () => isDrawerMenuOpenSet(true);
@@ -64,25 +99,24 @@ const Lay = () => {
 
   // END --- handler
 
-  // START --- state
-
-  // user's project
-  const [dataUserProject, dataUserProjectSet] = React.useState([]);
-
-  // drawer
-  const [isDrawerMenuOpen, isDrawerMenuOpenSet] = React.useState(false);
-  const [isDrawerNotificationOpen, isDrawerNotificationOpenSet] = React.useState(false);
-
-  // END --- state
-
   // START --- effect
 
-  // load user's project
+  // load user's projects
   React.useEffect(() => {
-    handleLoadUserProject();
-  }, [handleLoadUserProject]);
+    handleLoadUserProjects();
+  }, [handleLoadUserProjects]);
+
+  // load user's notifications (1st page)
+  React.useEffect(() => {
+    handleLoadUserNotifications(1);
+  }, [handleLoadUserNotifications]);
 
   // END --- effect
+
+  // count unread notifications
+  const dataUserNotificationsUnreadCount = !isEmptyObject(dataUserNotifications)
+    ? dataUserNotifications.notifications.filter(v => !v.isRead).length
+    : 0;
 
   return (
     <Layout>
@@ -106,19 +140,23 @@ const Lay = () => {
         afterVisibleChange={handleDrawerMenuVisibleChange}
       >
         <LayDrawerContentProject
-          dataUserProject={dataUserProject}
-          handleLoadUserProject={handleLoadUserProject}
+          dataUserProject={dataUserProjects}
+          handleLoadUserProject={handleLoadUserProjects}
           handleDrawerMenuClose={handleDrawerMenuClose}
         ></LayDrawerContentProject>
       </Drawer>
       {/* notification drawer */}
       <Drawer
+        className="drawer-notification"
         title="Notifications"
         placement="right"
         visible={isDrawerNotificationOpen}
         onClose={handleDrawerNotificationClose}
       >
-        <LayDrawerContentNotification></LayDrawerContentNotification>
+        <LayDrawerContentNotification
+          dataUserNotifications={dataUserNotifications}
+          handleLoadUserNotifications={handleLoadUserNotifications}
+        ></LayDrawerContentNotification>
       </Drawer>
       {/* page header */}
       <PageHeader
@@ -141,7 +179,7 @@ const Lay = () => {
             RD
           </Button>,
           // notification
-          <Badge key="page-header-button-notification" count={48}>
+          <Badge key="page-header-button-notification" count={dataUserNotificationsUnreadCount}>
             <Button type="primary" shape="circle" icon="notification" onClick={handleDrawerNotificationOpen}></Button>
           </Badge>
         ]}

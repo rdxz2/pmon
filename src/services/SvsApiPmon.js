@@ -3,6 +3,7 @@ import decode from 'jwt-decode';
 import { stringify } from 'querystring';
 
 import { IDENTITY_CONFIGURATION } from '../constants/ConstIdentityConfigurations';
+import { isEmptyObject } from '../utilities/UtlDataManipulator';
 
 export default class SvsApiPmon {
   constructor(apiInformation) {
@@ -26,7 +27,7 @@ export default class SvsApiPmon {
       // if response is received from api
       if (err.response) {
         switch (err.response.status) {
-          // bad request
+          // bad request -> get error message from server's response
           case 400:
             message = err.response.data;
             break;
@@ -93,14 +94,16 @@ export default class SvsApiPmon {
   }
 
   // send request (anything)
-  async sendRequest(endPointName = '', method = '', data = {}) {
+  async sendRequest(endPointName = '', method = '', data = {}, errorMessage) {
     try {
-      // cleanse empty array element
-      let key;
-      for (key in data)
-        if (data.hasOwnProperty(key)) if (Array.isArray(data[key])) data[key] = data[key].filter(v => v !== null);
+      // cleanse empty array element only if data is not empty
+      if (!isEmptyObject(data || {})) {
+        let key;
+        for (key in data)
+          if (data.hasOwnProperty(key)) if (Array.isArray(data[key])) data[key] = data[key].filter(v => v !== null);
+      }
 
-      const res = await this.send(endPointName, method, data, 'Failed sending request to server');
+      const res = await this.send(endPointName, method, data, errorMessage || 'Failed sending request to server');
       return res.data;
     } catch (err) {
       throw err.message;
