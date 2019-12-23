@@ -62,9 +62,9 @@ const Lay = () => {
 
   // load user's notification
   const handleLoadUserNotifications = React.useCallback(
-    async page => {
+    async (page, show) => {
       try {
-        const res = await svsApiPmon.sendRequest('notification/drawer', 'post', { page, show: 20 });
+        const res = await svsApiPmon.sendRequest('notification/drawer', 'post', { page, show: show || 100 });
         dataUserNotificationsSet(_dataUserNotifications =>
           isEmptyObject(_dataUserNotifications)
             ? { ...res }

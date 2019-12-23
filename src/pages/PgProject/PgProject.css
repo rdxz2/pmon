@@ -1,5 +1,72 @@
-.project-dashboard {
-  background-color: #ccc;
+.project-columns {
+  /* background-color: #ccc; */
   width: 100%;
-  overflow-x: auto;
+  height: 70vh;
+  overflow: auto;
+  /* border-radius: 2px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #cccccc50; */
+}
+
+/* columns */
+.project-column {
+  min-width: 250px;
+  background-color: #cccccc50;
+  padding: 8px;
+  border-radius: 2px;
+  /* spacing between columns */
+  margin-left: 8px;
+  margin-right: 8px;
+  /* make column parallel on top */
+  top: 0;
+  margin-bottom: auto;
+}
+.project-column:first-child {
+  margin-left: 0;
+}
+.project-column:last-child {
+  margin-right: 0;
+}
+.project-column-button-option {
+  float: right;
+}
+
+/* column's title */
+.project-column h4.ant-typography {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* column's additional */
+.project-column-additional {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* cards */
+.project-card,
+.project-card-add {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+}
+.project-card:hover {
+  /* background-color: #188fff; */
+  cursor: pointer;
+  background-color: #1890ff;
+  color: white;
+}
+.project-card > .ant-card-body,
+.project-card-add > .ant-card-body {
+  padding: 8px;
+}
+.project-card-add > .ant-card-body > textarea {
+  border: none;
+}
+
+.card-create-actions {
+  margin-top: 4px;
 }

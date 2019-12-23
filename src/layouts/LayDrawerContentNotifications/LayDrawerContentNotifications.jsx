@@ -43,7 +43,7 @@ const LayDrawerContentNotification = ({ dataUserNotifications, handleLoadUserNot
     }
 
     // else get more data
-    await handleLoadUserNotifications(page);
+    await handleLoadUserNotifications(page, 20);
 
     // set states
     pageSet(_page => ++_page);

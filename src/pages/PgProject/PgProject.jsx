@@ -6,7 +6,7 @@ import React from 'react';
 import { CtxPageTitle } from '../../contexts/CtxPageTitle';
 import { CtxApi } from '../../contexts/CtxApi';
 import { isEmptyObject } from '../../utilities/UtlDataManipulator';
-import ProjectDashbnoard from './Project/ProjectDashboard';
+import ProjectBoard from './Project/ProjectBoard';
 import ProjectInvitation from './Project/ProjectInvitation';
 
 const PgProject = ({ match }) => {
@@ -61,7 +61,7 @@ const PgProject = ({ match }) => {
 
   return !isEmptyObject(dataProject) ? (
     dataProject.isInvitationAccepted ? (
-      <ProjectDashbnoard></ProjectDashbnoard>
+      <ProjectBoard dataProject={dataProject}></ProjectBoard>
     ) : (
       <ProjectInvitation></ProjectInvitation>
     )
