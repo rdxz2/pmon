@@ -59,7 +59,7 @@ const FrRegisterWrapped = ({ form }) => {
           await svsApiPmonIdentity.login({ username: values.username, password: values.password });
 
           // get logged user data
-          const res = await svsApiPmon.sendRequest('user', 'get');
+          const res = await svsApiPmon.sendRequest('user/information', 'get');
 
           message.success(`Welcome to pmon, ${res.name}!`);
 

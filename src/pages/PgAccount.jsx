@@ -4,10 +4,10 @@ import { Icon, Menu } from 'antd';
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
 
-import AccountInformation from './AccountInformation/AccountInformation';
-import AccountPassword from './AccountPassword/AccountPassword';
-import AccountSettings from './AccountSettings/AccountSettings';
-import { CtxPageTitle } from '../../contexts/CtxPageTitle';
+import AccountInformation from './PgAccount/AccountInformation/AccountInformation';
+import AccountPassword from './PgAccount/AccountPassword/AccountPassword';
+import AccountSettings from './PgAccount/AccountSettings/AccountSettings';
+import { CtxPageTitle } from '../contexts/CtxPageTitle';
 
 const PgAccount = ({ match }) => {
   // START --- context

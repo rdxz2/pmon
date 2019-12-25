@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { isEmptyArray } from '../../utilities/UtlDataManipulator';
-import ProjectCr from './ProjectCr';
+import ProjectCr from './LayDrawerContentProject/ProjectCr';
 
 const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject, handleDrawerMenuClose }) => {
   // START --- context
@@ -64,7 +64,16 @@ const LayDrawerContentProject = ({ dataUserProject, handleLoadUserProject, handl
               <List.Item.Meta
                 avatar={<Avatar src={item.image}></Avatar>}
                 title={
-                  <Link to={`/project/${item.nameNormalized}`} onClick={handleDrawerMenuClose}>
+                  <Link
+                    to={
+                      item.isInvitationAccepted
+                        ? // if user already accepted the invitation then go to project's page: board
+                          `/project/${item.nameNormalized}/board`
+                        : // if not then go to project's invitation page
+                          `/projectinvitation/${item.nameNormalized}`
+                    }
+                    onClick={handleDrawerMenuClose}
+                  >
                     {item.name}
                   </Link>
                 }

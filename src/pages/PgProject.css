@@ -25,15 +25,12 @@
 .project-column:first-child {
   margin-left: 0;
 }
-.project-column:last-child {
-  margin-right: 0;
-}
 .project-column-button-option {
   float: right;
 }
 
 /* column's title */
-.project-column h4.ant-typography {
+.project-column-title {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -44,6 +41,15 @@
 .project-column-additional {
   text-align: center;
   margin-bottom: 10px;
+}
+
+/* dummy last column */
+.project-column-last {
+  display: block;
+  width: 8px;
+  color: white;
+  top: 0;
+  margin-bottom: auto;
 }
 
 /* cards */
@@ -57,6 +63,8 @@
   /* background-color: #188fff; */
   cursor: pointer;
   background-color: #1890ff;
+}
+.project-card:hover .ant-typography {
   color: white;
 }
 .project-card > .ant-card-body,
@@ -67,6 +75,10 @@
   border: none;
 }
 
+/* card creation: action buttons */
 .card-create-actions {
   margin-top: 4px;
+}
+.card-create-actions .ant-btn {
+  width: 100%;
 }

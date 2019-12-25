@@ -4,6 +4,9 @@ import { stringify } from 'querystring';
 
 import { IDENTITY_CONFIGURATION } from '../constants/ConstIdentityConfigurations';
 import { isEmptyObject } from '../utilities/UtlDataManipulator';
+import { message } from 'antd';
+
+import { useHistory } from 'react-router-dom';
 
 export default class SvsApiPmon {
   constructor(apiInformation) {
@@ -13,47 +16,55 @@ export default class SvsApiPmon {
 
   // send request to api
   async send(endPointName, method, data, errorMessage) {
-    const authorization = this.isAuthenticated() ? `Bearer ${this.getToken()}` : null;
-
     try {
+      // get authorization token
+      const authorization = this.isAuthenticated() ? `Bearer ${this.getToken()}` : null;
+
       return await Axios(`${this.baseUrl}/${endPointName}`, {
         method,
         data,
         headers: { Authorization: authorization }
       });
     } catch (err) {
-      let message = '';
+      let errorMessageToBeDisplayed = '';
 
       // if response is received from api
       if (err.response) {
         switch (err.response.status) {
           // bad request -> get error message from server's response
           case 400:
-            message = err.response.data;
+            errorMessageToBeDisplayed = err.response.data;
             break;
           // unauthorized
           case 401:
-            message = 'Your are currently not authorized, please log in again';
+            // display error message immediately
+            errorMessageToBeDisplayed = 'Your are currently not authorized, please log in again';
+            message.error(errorMessageToBeDisplayed);
+
+            // remove token
             this.logout();
-            window.location = '/login';
+
+            // redirect to login page
+            const history = useHistory();
+            history.replace('/login');
             break;
           // not found
           case 404:
-            message = 'Server not found';
+            errorMessageToBeDisplayed = 'Server not found';
             break;
           // internal server error
           case 500:
-            message = 'There are errors in server';
+            errorMessageToBeDisplayed = 'There are errors in server';
             break;
           default:
-            message = 'Failed to get response from server';
+            errorMessageToBeDisplayed = 'Failed to get response from server';
             break;
         }
       }
       // failed sending request
-      else message = errorMessage;
+      else errorMessageToBeDisplayed = errorMessage;
 
-      throw new Error(message);
+      throw new Error(errorMessageToBeDisplayed);
     }
   }
 
@@ -139,6 +150,7 @@ export default class SvsApiPmon {
   // check if access token is valid
   isAuthenticated = () => {
     const token = this.getToken();
+
     return !!token && !this.isExpired(token);
   };
 

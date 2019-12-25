@@ -1,8 +1,8 @@
 import { Divider, Icon } from 'antd';
 import React from 'react';
 import './PgRegister.css';
-import FrRegister from './FrRegister';
-import { CtxPageTitle } from '../../contexts/CtxPageTitle';
+import FrRegister from './PgRegister/FrRegister';
+import { CtxPageTitle } from '../contexts/CtxPageTitle';
 
 const PgRegister = () => {
   // START --- state

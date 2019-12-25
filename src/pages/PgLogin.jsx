@@ -3,8 +3,8 @@ import './PgLogin.css';
 import { Card, Divider } from 'antd';
 import React from 'react';
 
-import { CtxPageTitle } from '../../contexts/CtxPageTitle';
-import FrLogin from './FrLogin';
+import { CtxPageTitle } from '../contexts/CtxPageTitle';
+import FrLogin from './PgLogin/FrLogin';
 
 const PgLogin = () => {
   // START --- state

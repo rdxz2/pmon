@@ -8,13 +8,15 @@ import { useHistory, Link } from 'react-router-dom';
 import CmpPrivateRoute from '../components/CmpPrivateRoute';
 import CmpRunningTime from '../components/CmpRunningTime';
 import { CtxApi } from '../contexts/CtxApi';
-import PgAccount from '../pages/PgAccount/PgAccount';
-import PgDashboard from '../pages/PgDashboard/PgDashboard';
-import PgProject from '../pages/PgProject/PgProject';
-import LayDrawerContentNotification from './LayDrawerContentNotifications/LayDrawerContentNotifications';
-import LayDrawerContentProject from './LayDrawerContentProject/LayDrawerContentProject';
+import PgAccount from '../pages/PgAccount';
+import PgDashboard from '../pages/PgDashboard';
+import PgProject from '../pages/PgProject';
+import LayDrawerContentNotification from './Lay/LayDrawerContentNotifications';
+import LayDrawerContentProject from './Lay/LayDrawerContentProject';
 import { CtxPageTitle } from '../contexts/CtxPageTitle';
 import { isEmptyObject } from '../utilities/UtlDataManipulator';
+import PgZz from '../pages/PgZz';
+import PgProjectInvitation from '../pages/PgProjectInvitation';
 
 const Lay = () => {
   // START --- context
@@ -176,7 +178,7 @@ const Lay = () => {
           <CmpRunningTime key="page-header-running-time" initial={moment()}></CmpRunningTime>,
           // avatar
           <Button key="page-header-avatar-user" shape="circle" onClick={() => history.push('/account/information')}>
-            RD
+            {svsApiPmon.getProfile().nameShorthand}
           </Button>,
           // notification
           <Badge key="page-header-button-notification" count={dataUserNotificationsUnreadCount}>
@@ -198,9 +200,10 @@ const Lay = () => {
       <Layout.Content className="content-main">
         {/* routing */}
         <CmpPrivateRoute exact path="/" component={PgDashboard}></CmpPrivateRoute>
-        {/* <CmpPrivateRoute path="/dashboard" component={PgDashboard}></CmpPrivateRoute> */}
         <CmpPrivateRoute path="/account" component={PgAccount}></CmpPrivateRoute>
         <CmpPrivateRoute path="/project/:name" component={PgProject}></CmpPrivateRoute>
+        <CmpPrivateRoute path="/projectinvitation/:name" component={PgProjectInvitation}></CmpPrivateRoute>
+        <CmpPrivateRoute path="/zz" component={PgZz}></CmpPrivateRoute>
         {/* not found page */}
         {/* <Route component={PgNotFound}></Route> */}
       </Layout.Content>

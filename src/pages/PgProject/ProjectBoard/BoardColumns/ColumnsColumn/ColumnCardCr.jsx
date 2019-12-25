@@ -2,7 +2,7 @@ import React from 'react';
 import TextArea from 'antd/lib/input/TextArea';
 import { Row, Col, Button, message } from 'antd';
 
-const CardCr = ({ handleToggleAddCard, handleAddCard }) => {
+const ColumnCardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
   // START --- context
 
   // END --- context
@@ -26,10 +26,10 @@ const CardCr = ({ handleToggleAddCard, handleAddCard }) => {
   // submit (create card)
   const handleSubmit = async () => {
     // send to server
-    await handleAddCard(title);
+    await handleAddCard(uuid, title);
 
     // close this component
-    handleToggleAddCard();
+    handleToggleAddCard(uuid);
   };
 
   // END --- handler
@@ -41,22 +41,20 @@ const CardCr = ({ handleToggleAddCard, handleAddCard }) => {
   return (
     <>
       {/* Title */}
-      <div>
-        <TextArea value={title} name="title" placeholder="Something to do.." onChange={handleChange}></TextArea>
-      </div>
+      <TextArea value={title} name="title" placeholder="Something to do.." onChange={handleChange}></TextArea>
       {/* action buttons */}
       <Row className="card-create-actions" gutter={4}>
         {/* back */}
         <Col span={12}>
-          <Button block type="dashed" icon="close" onClick={handleToggleAddCard}></Button>
+          <Button size="small" type="dashed" icon="close" onClick={() => handleToggleAddCard(uuid)}></Button>
         </Col>
         {/* submit */}
         <Col span={12}>
-          <Button block type="primary" icon="check" onClick={handleSubmit}></Button>
+          <Button size="small" type="primary" icon="check" onClick={handleSubmit}></Button>
         </Col>
       </Row>
     </>
   );
 };
 
-export default CardCr;
+export default React.memo(ColumnCardCr);

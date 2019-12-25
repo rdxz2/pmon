@@ -40,15 +40,15 @@ const AccountPassword = ({ handleChangeActiveMenu }) => {
 
   // START --- effect
 
-  // load user's password last modified date
-  React.useEffect(() => {
-    handleLoadPasswordMd();
-  }, [handleLoadPasswordMd]);
-
   // change active menu
   React.useEffect(() => {
     handleChangeActiveMenu('changepassword');
   }, [handleChangeActiveMenu]);
+
+  // load user's password last modified date
+  React.useEffect(() => {
+    handleLoadPasswordMd();
+  }, [handleLoadPasswordMd]);
 
   // END --- effect
   return (

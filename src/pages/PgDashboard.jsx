@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CtxPageTitle } from '../../contexts/CtxPageTitle';
+import { CtxPageTitle } from '../contexts/CtxPageTitle';
 
 const PgDashboard = () => {
   // START --- state

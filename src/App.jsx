@@ -6,9 +6,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CtxPvdApi from './contexts/CtxApi';
 import CtxPvdLayouting from './contexts/CtxLayouting';
 import Lay from './layouts/Lay';
-import PgLogin from './pages/PgLogin/PgLogin';
-import PgNotFound from './pages/PgNotFound/PgNotFound';
-import PgRegister from './pages/PgRegister/PgRegister';
+import PgLogin from './pages/PgLogin';
+// import PgNotFound from './pages/PgNotFound';
+import PgRegister from './pages/PgRegister';
 import CmpPrivateRoute from './components/CmpPrivateRoute';
 import CtxPvdPageTitle from './contexts/CtxPageTitle';
 
