@@ -6,7 +6,7 @@ import { CtxApi } from '../../contexts/CtxApi';
 import BoardHeader from './ProjectBoard/BoardHeader';
 import BoardColumns from './ProjectBoard/BoardColumns';
 
-const ProjectBoard = ({ handleChangeActiveMenu, projectName }) => {
+const ProjectBoard = ({ handleChangeActiveMenu, projectName, match }) => {
   // START --- context
 
   // api
@@ -48,6 +48,12 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName }) => {
     }
   }, [projectName, svsApiPmon]);
 
+  // change project's column value
+  const handleChangeProjectColumnValue = React.useCallback(
+    columns => dataProjectSet(_dataProject => ({ ..._dataProject, columns: [...columns] })),
+    []
+  );
+
   // END --- handler
 
   // START --- effect
@@ -69,7 +75,11 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName }) => {
       {/* header */}
       <BoardHeader></BoardHeader>
       {/* columns */}
-      <BoardColumns dataProject={dataProject} dataProjectSet={dataProjectSet}></BoardColumns>
+      <BoardColumns
+        dataProject={dataProject}
+        handleChangeProjectColumnValue={handleChangeProjectColumnValue}
+        match={match}
+      ></BoardColumns>
     </>
   );
 };

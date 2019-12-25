@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Typography, Badge, Divider, Button, Card } from 'antd';
 import ColumnCard from './ColumnsColumn/ColumnCard';
-import ColumnCardCr from './ColumnsColumn/ColumnCardCr';
+import CardCr from './ColumnsColumn/ColumnCard/CardCr';
 
 const ColumnsColumn = ({
   uuid,
@@ -42,7 +42,7 @@ const ColumnsColumn = ({
       {/* additional row action */}
       <div className="project-column-additional">
         {/* cards count badge */}
-        <Badge count={cards.length}></Badge>
+        <Badge className="project-column-badge-count" count={cards.length}></Badge>
         {/* divider */}
         <Divider type="vertical"></Divider>
         {/* more button */}
@@ -55,11 +55,7 @@ const ColumnsColumn = ({
       {/* footer - add a card */}
       {is_adding_card ? (
         <Card className="project-card-add">
-          <ColumnCardCr
-            uuid={uuid}
-            handleToggleAddCard={handleToggleAddCard}
-            handleAddCard={handleAddCard}
-          ></ColumnCardCr>
+          <CardCr uuid={uuid} handleToggleAddCard={handleToggleAddCard} handleAddCard={handleAddCard}></CardCr>
         </Card>
       ) : (
         <Button block type="dashed" icon="plus" onClick={() => handleToggleAddCard(uuid)}></Button>

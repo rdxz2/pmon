@@ -2,7 +2,7 @@ import React from 'react';
 import TextArea from 'antd/lib/input/TextArea';
 import { Row, Col, Button, message } from 'antd';
 
-const ColumnCardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
+const CardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
   // START --- context
 
   // END --- context
@@ -57,4 +57,4 @@ const ColumnCardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
   );
 };
 
-export default React.memo(ColumnCardCr);
+export default React.memo(CardCr);

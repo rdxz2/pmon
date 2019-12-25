@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectCalendar = ({ handleChangeActiveMenu, projectName }) => {
+const ProjectCalendar = ({ handleChangeActiveMenu, projectName, match }) => {
   // START --- context
 
   // END --- context

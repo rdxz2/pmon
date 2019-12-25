@@ -45,6 +45,8 @@ const PgProject = ({ match }) => {
 
   // END --- effect
 
+  const _match = match;
+
   return (
     <>
       {/* menu list */}
@@ -82,37 +84,41 @@ const PgProject = ({ match }) => {
       <div>
         <Route
           path={`${match.url}/board`}
-          render={() => (
+          render={({ match }) => (
             <ProjectBoard
               handleChangeActiveMenu={handleChangeActiveMenu}
-              projectName={match.params.name}
+              projectName={_match.params.name}
+              match={match}
             ></ProjectBoard>
           )}
         ></Route>
         <Route
           path={`${match.url}/calendar`}
-          render={() => (
+          render={({ match }) => (
             <ProjectCalendar
               handleChangeActiveMenu={handleChangeActiveMenu}
-              projectName={match.params.name}
+              projectName={_match.params.name}
+              match={match}
             ></ProjectCalendar>
           )}
         ></Route>
         <Route
           path={`${match.url}/timeline`}
-          render={() => (
+          render={({ match }) => (
             <ProjectTimeline
               handleChangeActiveMenu={handleChangeActiveMenu}
-              projectName={match.params.name}
+              projectName={_match.params.name}
+              match={match}
             ></ProjectTimeline>
           )}
         ></Route>
         <Route
           path={`${match.url}/setting`}
-          render={() => (
+          render={({ match }) => (
             <ProjectSetting
               handleChangeActiveMenu={handleChangeActiveMenu}
-              projectName={match.params.name}
+              projectName={_match.params.name}
+              match={match}
             ></ProjectSetting>
           )}
         ></Route>

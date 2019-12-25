@@ -29,6 +29,11 @@
   float: right;
 }
 
+/* column's cards count badge */
+.project-column-badge-count {
+  background-color: #1890ff;
+}
+
 /* column's title */
 .project-column-title {
   text-align: center;

@@ -5,9 +5,12 @@ import uuid from 'uuid/v1';
 import { CtxApi } from '../../../contexts/CtxApi';
 import { isEmptyArray, isEmptyObject } from '../../../utilities/UtlDataManipulator';
 import ColumnsColumn from './BoardColumns/ColumnsColumn';
-import ColumnCardDt from './BoardColumns/ColumnsColumn/ColumnCardDt';
+import CardDt from './BoardColumns/ColumnsColumn/ColumnCard/CardDt';
+import { useHistory, Route } from 'react-router-dom';
 
-const BoardColumns = ({ dataProject, dataProjectSet }) => {
+const defaultSelectedCard = { id: 0, code: '' };
+
+const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) => {
   // START --- context
 
   // api
@@ -18,48 +21,82 @@ const BoardColumns = ({ dataProject, dataProjectSet }) => {
   // START --- state
 
   // local modify-able columns array
-  const [columns, columnsSet] = React.useState([]);
+  // const [columns, columnsSet] = React.useState([]);
 
   // card detail's modal
-  const [selectedCardTitle, selectedCardTitleSet] = React.useState('');
-  const [isCardDetailModalOpen, isCardDetailModalOpenSet] = React.useState(false);
+  const [selectedCard, selectedCardSet] = React.useState({ ...defaultSelectedCard });
+  const [isCardDetailModalOpen, isCardDetailModalOpenSet] = React.useState(true);
 
   // END --- state
 
   // START --- other variables
+
+  // history
+  const history = useHistory();
 
   // END --- other variables
 
   // START --- handler
 
   // card detail modal open/close handler
-  const handleCardDetailModalOpen = React.useCallback(title => {
-    selectedCardTitleSet(title);
-    isCardDetailModalOpenSet(true);
-  }, []);
+  const handleCardDetailModalOpen = React.useCallback(
+    (id, code) => {
+      // add card code to url
+      history.push(`${match.url}/${code}`);
+
+      // select card based on targetted card
+      selectedCardSet({ id, code });
+
+      // open modal
+      isCardDetailModalOpenSet(true);
+    },
+    [history, match.url]
+  );
   const handleCardDetailModalClose = () => {
-    selectedCardTitleSet('');
+    // reset url
+    handleResetUrl();
+
+    // reset selected card
+    handleResetSelectedCard();
+
+    // close modal
     isCardDetailModalOpenSet(false);
   };
+
+  // reset selected card's value
+  const handleResetSelectedCard = React.useCallback(() => selectedCardSet({ ...defaultSelectedCard }), []);
+
+  // reset url (remove card code from url)
+  const handleResetUrl = React.useCallback(() => history.push(match.url), [history, match.url]);
 
   // toggle mode for adding a card in a column
   const handleToggleAddCard = React.useCallback(
     uuid => {
-      columnsSet(_columns => {
-        let column = _columns.find(v => v.uuid === uuid);
-        column.is_adding_card = !column.is_adding_card;
-        return [...columns];
-      });
+      // get columns from current state
+      let tempDataProjectColumns = [...dataProject.columns];
+      let targetColumn = tempDataProjectColumns.find(v => v.uuid === uuid);
+
+      // modify column property: is_adding_card
+      targetColumn.is_adding_card = !targetColumn.is_adding_card;
+
+      handleChangeProjectColumnValue(tempDataProjectColumns);
+
+      // columnsSet(_columns => {
+      //   let column = _columns.find(v => v.uuid === uuid);
+      //   column.is_adding_card = !column.is_adding_card;
+      //   return [...columns];
+      // });
     },
-    [columns]
+    [dataProject.columns, handleChangeProjectColumnValue]
   );
 
   // add a card to a column
   const handleAddCard = React.useCallback(
     async (_uuid, title) => {
       try {
-        let dataColumnsTemp = [...dataProject.columns];
-        let targetColumn = dataColumnsTemp.find(v => v.uuid === _uuid);
+        // get columns from current state
+        let tempDataProjectColumns = [...dataProject.columns];
+        let targetColumn = tempDataProjectColumns.find(v => v.uuid === _uuid);
 
         // send request to server
         // res: {code, title}
@@ -75,21 +112,24 @@ const BoardColumns = ({ dataProject, dataProjectSet }) => {
           title: res.title
         });
 
-        dataProjectSet(_dataProject => ({ ..._dataProject, columns: [...dataColumnsTemp] }));
+        handleChangeProjectColumnValue(tempDataProjectColumns);
+
+        // dataProjectSet(_dataProject => ({ ..._dataProject, columns: [...tempDataProjectColumns] }));
       } catch (err) {
         message.error(err);
       }
     },
-    [dataProject.columns, dataProjectSet, svsApiPmon]
+    [dataProject.columns, handleChangeProjectColumnValue, svsApiPmon]
   );
 
   // END --- handler
 
   // START --- effect
 
-  React.useEffect(() => {
-    if (!isEmptyArray(dataProject.columns)) columnsSet([...dataProject.columns]);
-  }, [dataProject.columns]);
+  // set state
+  // React.useEffect(() => {
+  //   if (!isEmptyArray(dataProject.columns)) columnsSet([...dataProject.columns]);
+  // }, [dataProject.columns]);
 
   // END --- effect
 
@@ -102,16 +142,18 @@ const BoardColumns = ({ dataProject, dataProjectSet }) => {
           {/* wrapper */}
           <List.Item>
             {/* render columns if not empty */}
-            {!isEmptyArray(columns)
-              ? columns.map(column => (
-                  <ColumnsColumn
-                    key={column.uuid}
-                    {...column}
-                    handleToggleAddCard={handleToggleAddCard}
-                    handleAddCard={handleAddCard}
-                    handleCardDetailModalOpen={handleCardDetailModalOpen}
-                  ></ColumnsColumn>
-                ))
+            {!isEmptyObject(dataProject)
+              ? !isEmptyArray(dataProject.columns)
+                ? dataProject.columns.map(column => (
+                    <ColumnsColumn
+                      key={column.uuid}
+                      {...column}
+                      handleToggleAddCard={handleToggleAddCard}
+                      handleAddCard={handleAddCard}
+                      handleCardDetailModalOpen={handleCardDetailModalOpen}
+                    ></ColumnsColumn>
+                  ))
+                : null
               : null}
             {/* additional column: add column */}
             <List className="project-column" itemLayout="vertical">
@@ -122,19 +164,24 @@ const BoardColumns = ({ dataProject, dataProjectSet }) => {
           </List.Item>
         </List>
       </div>
-      {/* card detail (inside modal) */}
-      <Modal
-        centered
-        destroyOnClose
-        title={selectedCardTitle}
-        visible={isCardDetailModalOpen}
-        onCancel={handleCardDetailModalClose}
-        footer={null}
-      >
-        <ColumnCardDt></ColumnCardDt>
-      </Modal>
+      {/* card detail (inside modal) with routing */}
+      <Route
+        path={`${match.url}/:code`}
+        render={() => (
+          <Modal
+            centered
+            destroyOnClose
+            title={selectedCard.code}
+            visible={isCardDetailModalOpen}
+            onCancel={handleCardDetailModalClose}
+            footer={null}
+          >
+            <CardDt id={selectedCard.id} handleResetUrl={handleResetUrl}></CardDt>
+          </Modal>
+        )}
+      ></Route>
     </>
   );
 };
 
-export default BoardColumns;
+export default React.memo(BoardColumns);

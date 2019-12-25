@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
 
-const ColumnCard = ({ uuid, code, title, handleCardDetailModalOpen }) => {
+const ColumnCard = ({ uuid, id, code, title, handleCardDetailModalOpen }) => {
   return (
-    <Card key={uuid} className="project-card" onClick={() => handleCardDetailModalOpen(code)}>
+    <Card key={uuid} className="project-card" onClick={() => handleCardDetailModalOpen(id, code)}>
       {/* card code */}
       <Typography.Text type="secondary">{code}</Typography.Text>
       {/* card title */}
