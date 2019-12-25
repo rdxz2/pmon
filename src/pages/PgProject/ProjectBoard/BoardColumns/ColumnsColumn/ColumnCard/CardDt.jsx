@@ -1,9 +1,9 @@
+import { Button, Divider, Input, message } from 'antd';
 import React from 'react';
-import { message, Input, Button, Divider } from 'antd';
+
 import CmpDetail from '../../../../../../components/CmpDetail';
-import { CtxApi } from '../../../../../../contexts/CtxApi';
-import moment from 'moment';
 import { formatDateTime } from '../../../../../../constants/ConstDateFormats';
+import { CtxApi } from '../../../../../../contexts/CtxApi';
 import { toReadableDateTime } from '../../../../../../utilities/UtlDataManipulator';
 
 const CardDt = ({ id, handleResetUrl, match }) => {
@@ -58,12 +58,13 @@ const CardDt = ({ id, handleResetUrl, match }) => {
         asd
       </Button>
       <Divider type="horizontal"></Divider>
-      <CmpDetail label="Created by">{dataCard.createdBy}</CmpDetail>
-      <CmpDetail label="Created on">{toReadableDateTime(dataCard.createdDate, formatDateTime.standard)}</CmpDetail>
-      <CmpDetail label="Last modified by">{dataCard.updatedBy}</CmpDetail>
-      <CmpDetail label="Last modified on">
+      <div>
+        Created by {dataCard.createdBy || '-'} on {toReadableDateTime(dataCard.createdDate, formatDateTime.standard)}
+      </div>
+      <div>
+        Last modified by {dataCard.updatedBy || '-'} on{' '}
         {toReadableDateTime(dataCard.updatedDate, formatDateTime.standard)}
-      </CmpDetail>
+      </div>
     </>
   );
 };

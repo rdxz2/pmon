@@ -1,12 +1,13 @@
 import { Button, List, message, Modal } from 'antd';
 import React from 'react';
+import { Route, useHistory } from 'react-router-dom';
 import uuid from 'uuid/v1';
 
 import { CtxApi } from '../../../contexts/CtxApi';
 import { isEmptyArray, isEmptyObject } from '../../../utilities/UtlDataManipulator';
 import ColumnsColumn from './BoardColumns/ColumnsColumn';
 import CardDt from './BoardColumns/ColumnsColumn/ColumnCard/CardDt';
-import { useHistory, Route } from 'react-router-dom';
+import ColumnCr from './BoardColumns/ColumnsColumn/ColumnCr';
 
 const defaultSelectedCard = { id: 0, code: '' };
 
@@ -20,8 +21,8 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
 
   // START --- state
 
-  // local modify-able columns array
-  // const [columns, columnsSet] = React.useState([]);
+  // column adding
+  const [isAddingColumn, isAddingColumnSet] = React.useState(false);
 
   // card detail's modal
   const [selectedCard, selectedCardSet] = React.useState({ ...defaultSelectedCard });
@@ -69,52 +70,28 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
   // reset url (remove card code from url)
   const handleResetUrl = React.useCallback(() => history.push(match.url), [history, match.url]);
 
-  // toggle mode for adding a card in a column
-  const handleToggleAddCard = React.useCallback(
-    uuid => {
-      // get columns from current state
-      let tempDataProjectColumns = [...dataProject.columns];
-      let targetColumn = tempDataProjectColumns.find(v => v.uuid === uuid);
-
-      // modify column property: is_adding_card
-      targetColumn.is_adding_card = !targetColumn.is_adding_card;
-
-      handleChangeProjectColumnValue(tempDataProjectColumns);
-
-      // columnsSet(_columns => {
-      //   let column = _columns.find(v => v.uuid === uuid);
-      //   column.is_adding_card = !column.is_adding_card;
-      //   return [...columns];
-      // });
-    },
-    [dataProject.columns, handleChangeProjectColumnValue]
-  );
-
   // add a card to a column
   const handleAddCard = React.useCallback(
     async (_uuid, title) => {
       try {
         // get columns from current state
-        let tempDataProjectColumns = [...dataProject.columns];
-        let targetColumn = tempDataProjectColumns.find(v => v.uuid === _uuid);
+        let columns = [...dataProject.columns];
+        let column = columns.find(v => v.uuid === _uuid);
 
         // send request to server
-        // res: {code, title}
+        // res: {id, code, title}
         const res = await svsApiPmon.sendRequest('card/add', 'post', {
-          columnId: targetColumn.id,
+          columnId: column.id,
           title
         });
 
         // store created card server response to local variable
-        targetColumn.cards.push({
-          uuid: uuid(),
-          code: res.code,
-          title: res.title
+        column.cards.push({
+          ...res,
+          uuid: uuid()
         });
 
-        handleChangeProjectColumnValue(tempDataProjectColumns);
-
-        // dataProjectSet(_dataProject => ({ ..._dataProject, columns: [...tempDataProjectColumns] }));
+        handleChangeProjectColumnValue(columns);
       } catch (err) {
         message.error(err);
       }
@@ -122,14 +99,42 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
     [dataProject.columns, handleChangeProjectColumnValue, svsApiPmon]
   );
 
+  // toggle mode for adding a column
+  const handleToggleAddColumn = React.useCallback(() => {
+    isAddingColumnSet(_isAddingColumn => !_isAddingColumn);
+  }, []);
+
+  // add a column
+  const handleAddColumn = React.useCallback(
+    async name => {
+      try {
+        // get columns from current state
+        let { id, columns } = dataProject;
+
+        // send request to server
+        // res: {id, name, nameNormalized, maxCard, cardsTotalCount}
+        const res = await svsApiPmon.sendRequest('column/add', 'post', {
+          projectId: id,
+          name
+        });
+
+        // add 1 column to the state
+        columns.push({
+          ...res,
+          uuid: uuid()
+        });
+
+        handleChangeProjectColumnValue(columns);
+      } catch (err) {
+        message.error(err);
+      }
+    },
+    [dataProject, handleChangeProjectColumnValue, svsApiPmon]
+  );
+
   // END --- handler
 
   // START --- effect
-
-  // set state
-  // React.useEffect(() => {
-  //   if (!isEmptyArray(dataProject.columns)) columnsSet([...dataProject.columns]);
-  // }, [dataProject.columns]);
 
   // END --- effect
 
@@ -138,9 +143,9 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
       {/* project columns */}
       <div className="project-columns">
         {/* wrapper */}
-        <List itemLayout="horizontal">
+        <List className="project-column-item" itemLayout="horizontal">
           {/* wrapper */}
-          <List.Item>
+          <List.Item style={{ paddingTop: 0 }}>
             {/* render columns if not empty */}
             {!isEmptyObject(dataProject)
               ? !isEmptyArray(dataProject.columns)
@@ -148,7 +153,7 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
                     <ColumnsColumn
                       key={column.uuid}
                       {...column}
-                      handleToggleAddCard={handleToggleAddCard}
+                      // handleToggleAddCard={handleToggleAddCard}
                       handleAddCard={handleAddCard}
                       handleCardDetailModalOpen={handleCardDetailModalOpen}
                     ></ColumnsColumn>
@@ -157,7 +162,11 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
               : null}
             {/* additional column: add column */}
             <List className="project-column" itemLayout="vertical">
-              <Button block type="primary" icon="plus"></Button>
+              {isAddingColumn ? (
+                <ColumnCr handleToggleAddColumn={handleToggleAddColumn} handleAddColumn={handleAddColumn}></ColumnCr>
+              ) : (
+                <Button block type="primary" icon="plus" onClick={handleToggleAddColumn}></Button>
+              )}
             </List>
             {/* dummy column to prevent last column collided with scrollbar */}
             <div className="project-column-last">x</div>
@@ -169,6 +178,7 @@ const BoardColumns = ({ dataProject, handleChangeProjectColumnValue, match }) =>
         path={`${match.url}/:code`}
         render={() => (
           <Modal
+            width={800}
             centered
             destroyOnClose
             title={selectedCard.code}

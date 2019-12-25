@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 import React from 'react';
 import uuid from 'uuid/v1';
 
@@ -18,6 +18,7 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName, match }) => {
 
   // project data
   const [dataProject, dataProjectSet] = React.useState({});
+  const [dataProjectLoading, dataProjectLoadingSet] = React.useState(false);
 
   // END --- state
 
@@ -30,6 +31,8 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName, match }) => {
   // load project's data
   const handleLoadProjectData = React.useCallback(async () => {
     try {
+      dataProjectLoadingSet(true);
+
       const res = await svsApiPmon.sendRequest(`project/main/${projectName}`, 'get');
 
       // add uuid to columns
@@ -43,6 +46,7 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName, match }) => {
 
       // set state
       dataProjectSet({ ...res });
+      dataProjectLoadingSet(false);
     } catch (err) {
       message.error(err);
     }
@@ -72,14 +76,17 @@ const ProjectBoard = ({ handleChangeActiveMenu, projectName, match }) => {
 
   return (
     <>
-      {/* header */}
-      <BoardHeader></BoardHeader>
-      {/* columns */}
-      <BoardColumns
-        dataProject={dataProject}
-        handleChangeProjectColumnValue={handleChangeProjectColumnValue}
-        match={match}
-      ></BoardColumns>
+      {/* loading spinner */}
+      <Spin spinning={dataProjectLoading} size="large" tip="Loading project..">
+        {/* header */}
+        <BoardHeader></BoardHeader>
+        {/* columns */}
+        <BoardColumns
+          dataProject={dataProject}
+          handleChangeProjectColumnValue={handleChangeProjectColumnValue}
+          match={match}
+        ></BoardColumns>
+      </Spin>
     </>
   );
 };

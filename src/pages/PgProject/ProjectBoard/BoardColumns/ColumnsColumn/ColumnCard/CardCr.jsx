@@ -1,8 +1,8 @@
-import React from 'react';
+import { Button, Col, Row } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
-import { Row, Col, Button, message } from 'antd';
+import React from 'react';
 
-const CardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
+const CardCr = ({ uuid, handleToggleIsAddingCard, handleAddCard }) => {
   // START --- context
 
   // END --- context
@@ -29,7 +29,7 @@ const CardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
     await handleAddCard(uuid, title);
 
     // close this component
-    handleToggleAddCard(uuid);
+    handleToggleIsAddingCard();
   };
 
   // END --- handler
@@ -41,12 +41,19 @@ const CardCr = ({ uuid, handleToggleAddCard, handleAddCard }) => {
   return (
     <>
       {/* Title */}
-      <TextArea value={title} name="title" placeholder="Something to do.." onChange={handleChange}></TextArea>
+      <TextArea
+        autoFocus
+        autoSize
+        value={title}
+        name="title"
+        placeholder="Something to do.."
+        onChange={handleChange}
+      ></TextArea>
       {/* action buttons */}
       <Row className="card-create-actions" gutter={4}>
         {/* back */}
         <Col span={12}>
-          <Button size="small" type="dashed" icon="close" onClick={() => handleToggleAddCard(uuid)}></Button>
+          <Button size="small" type="dashed" icon="close" onClick={handleToggleIsAddingCard}></Button>
         </Col>
         {/* submit */}
         <Col span={12}>

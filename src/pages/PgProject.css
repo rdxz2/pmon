@@ -1,3 +1,4 @@
+/* columns list */
 .project-columns {
   /* background-color: #ccc; */
   width: 100%;
@@ -8,11 +9,14 @@
   border-style: solid;
   border-color: #cccccc50; */
 }
+.project-columns-item {
+  padding-top: 0;
+}
 
-/* columns */
+/* column */
 .project-column {
   min-width: 250px;
-  background-color: #cccccc50;
+  /* background-color: #cccccc50; */
   padding: 8px;
   border-radius: 2px;
   /* spacing between columns */
@@ -29,13 +33,20 @@
   float: right;
 }
 
-/* column's cards count badge */
-.project-column-badge-count {
-  background-color: #1890ff;
-}
-
 /* column's title */
 .project-column-title {
+  /* sticky header */
+  background-color: #efefef;
+  /* margin-top: -8px; */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 0;
+  margin-left: -8px;
+  position: sticky;
+  margin-right: -8px;
+  top: 0;
+  z-index: 1;
+  /* prevent word wrapping */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -58,12 +69,17 @@
 }
 
 /* cards */
+/* card's margin */
 .project-card,
 .project-card-add {
   margin-top: 4px;
   margin-bottom: 4px;
   border-radius: 4px;
 }
+.project-card-setting-edit {
+  margin-bottom: 8px;
+}
+/* card on hover */
 .project-card:hover {
   /* background-color: #188fff; */
   cursor: pointer;
@@ -72,11 +88,13 @@
 .project-card:hover .ant-typography {
   color: white;
 }
+/* body's padding */
 .project-card > .ant-card-body,
+.project-card-setting-edit > .ant-card-body,
 .project-card-add > .ant-card-body {
   padding: 8px;
 }
-.project-card-add > .ant-card-body > textarea {
+.project-card > .project-card-add > .ant-card-body > textarea {
   border: none;
 }
 
